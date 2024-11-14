@@ -1,44 +1,62 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the raw motor vehicle collision data for analysis
+# Author: [Your Name]
+# Date: [Today's Date]
+# Contact: [Your Email]
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Downloaded raw data on motor vehicle collisions
+# Any other information needed? Ensure dependencies are installed, and data file path is correct.
 
 #### Workspace setup ####
 library(tidyverse)
+library(janitor)
+library(arrow)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+raw_data <- read_csv("data/01-raw_data/Motor Vehicle Collisions with KSI Data - 4326.csv")
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
-  filter(wing_width_mm != "caw") |>
-  mutate(
-    flying_time_sec_first_timer = if_else(flying_time_sec_first_timer == "1,35",
-                                   "1.35",
-                                   flying_time_sec_first_timer)
+# Initial data cleaning and transformation
+cleaned_data <- 
+  raw_data |> 
+  # Select relevant columns for your analysis
+  select(
+    ACCNUM, DATE, TIME, ROAD_CLASS, DISTRICT, TRAFFCTL, VISIBILITY, LIGHT, 
+    RDSFCOND, ACCLOC, ACCLASS, IMPACTYPE, INVTYPE, INVAGE, INJURY, DRIVCOND
   ) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "490",
-                                 "49",
-                                 wing_width_mm)) |>
-  mutate(wing_width_mm = if_else(wing_width_mm == "6",
-                                 "60",
-                                 wing_width_mm)) |>
+  # Filter out rows with missing or irrelevant injury data
+  filter(!is.na(INJURY), !is.na(DRIVCOND), !is.na(LIGHT), !is.na(RDSFCOND)) |>
+  # Convert injury severity to binary variable
+  mutate(INJURY_SEVERE = if_else(INJURY == "Fatal", 1, 0)) |>
+  # Combine categories for `DRIVCOND`
   mutate(
-    wing_width_mm = as.numeric(wing_width_mm),
-    wing_length_mm = as.numeric(wing_length_mm),
-    flying_time_sec_first_timer = as.numeric(flying_time_sec_first_timer)
+    DRIVCOND_GROUP = case_when(
+      DRIVCOND %in% c("Ability Impaired, Alcohol Over .08", "Had Been Drinking", "Ability Impaired, Drugs") ~ "Impaired",
+      DRIVCOND %in% c("Inattentive", "Fatigue", "Medical or Physical Disability") ~ "Distracted/Impaired",
+      DRIVCOND == "Normal" ~ "Normal",
+      TRUE ~ "Other"
+    ),
+    # Combine categories for `RDSFCOND`
+    RDSFCOND_GROUP = case_when(
+      RDSFCOND == "None" ~ "Good Condition",
+      RDSFCOND %in% c("Ice", "Slush", "Packed Snow", "Loose Snow", "Loose Sand or Gravel") ~ "Hazardous Surface",
+      RDSFCOND == "Wet" ~ "Wet",
+      TRUE ~ "Other"
+    ),
+    # Combine categories for `LIGHT`
+    LIGHT_GROUP = case_when(
+      LIGHT %in% c("Daylight", "Dawn", "Dusk") ~ "Natural Light",
+      LIGHT %in% c("Dark, artificial", "Dawn, artificial", "Daylight, artificial", "Dusk, artificial") ~ "Artificial Light",
+      TRUE ~ "Other"
+    )
   ) |>
-  rename(flying_time = flying_time_sec_first_timer,
-         width = wing_width_mm,
-         length = wing_length_mm
-         ) |> 
-  tidyr::drop_na()
+  # Convert combined group variables to factors
+  mutate(
+    DRIVCOND_GROUP = factor(DRIVCOND_GROUP),
+    RDSFCOND_GROUP = factor(RDSFCOND_GROUP),
+    LIGHT_GROUP = factor(LIGHT_GROUP)
+  ) |>
+  # Remove rows with missing or invalid data
+  drop_na()
 
-#### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+#### Save cleaned data ####
+write_parquet(cleaned_data, sink = "data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet")

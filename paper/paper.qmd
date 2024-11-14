@@ -19,26 +19,41 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+library(arrow)
+library(here)
+library(rstanarm)
+library(modelsummary)
+library(ggplot2)
+library(knitr)
+library(marginaleffects)
+library(plotly)
+library(tibble)
+library(margins)
+library(kableExtra)
 ```
 
 
 # Introduction
 
-Overview paragraph
+## Overview
 
-Estimand paragraph
-
-Results paragraph
-
-Why it matters paragraph
-
-Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data....
+This paper investigates the factors influencing the severity of motor vehicle collisions, with a particular focus on the conditions at the time of each incident. Motor vehicle collisions remain a leading cause of death and severe injury globally, and understanding the circumstances under which these incidents result in severe outcomes is critical for improving road safety. By examining data from the city of Toronto, we aim to identify how driver condition, road surface condition, and lighting condition contribute to the likelihood of a collision resulting in a severe injury or fatality. The findings of this study can inform targeted road safety policies and interventions to mitigate the risk of severe traffic accidents.
 
 
+## Estimand
+The estimand in this paper is the probability of a severe injury (fatal outcome) in motor vehicle collisions, given specific conditions at the time of the incident, including driver condition, road surface, and lighting conditions. Measuring this probability for all collisions is challenging due to limitations in data completeness and accuracy, as not all collisions are reported or consistently documented. Additionally, the dataset contains broad categories such as "Other" for road and driver conditions, which may obscure specific contextual details. To estimate this probability, we employ a logistic regression model on a sample dataset of collisions from Toronto’s open data portal, allowing us to approximate the likelihood of severe injuries under varying conditions.
 
+## Results Summary
 
+The results of our logistic regression model indicate significant associations between injury severity and certain predictor variables. Notably, impaired driver conditions and adverse lighting environments are associated with an increased likelihood of severe injuries. However, hazardous road surfaces—counterintuitively—appear to be linked with a lower probability of severe injury, which could reflect behavioral adjustments made by drivers under difficult road conditions. This analysis highlights the complex interplay between environmental and human factors in determining collision outcomes, underscoring the need for multifaceted safety measures.
 
+## Why This Study Matters
+
+This study is important for several reasons. First, it provides actionable insights into the specific conditions under which motor vehicle collisions are most likely to result in severe injury or death. This information can guide policymakers and road safety advocates in designing effective interventions. For example, enhanced education campaigns targeting impaired driving, improvements in road lighting infrastructure, and better management of road surfaces in hazardous conditions could collectively contribute to reducing collision severity. Additionally, this study uses a Bayesian logistic regression model, which allows for the incorporation of prior knowledge and provides a robust framework for understanding the factors influencing injury severity. In a broader sense, understanding the determinants of collision severity can support efforts to create safer urban environments, thereby protecting the well-being of residents and reducing the societal costs associated with severe traffic incidents.
+
+## Paper Structure
+
+The remainder of this paper is structured as follows. In @sec-data, we present an overview of the dataset used in this study, along with a detailed description of the variables and the data cleaning process. @sec-model outlines the Bayesian logistic regression model applied in our analysis, including the model setup, assumptions, and justification. In @sec-result, we summarize the results of our analysis and interpret the findings within the context of existing literature on road safety. Finally, @sec-discussion discusses the implications of these findings, acknowledges the limitations of the study, and suggests directions for future research.
 
 # Data {#sec-data}
 
@@ -46,149 +61,296 @@ Telegraphing paragraph: The remainder of this paper is structured as follows. @s
 
 We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
 
-Overview text
+This study utilizes data from the Motor Vehicle Collisions Involving Killed or Seriously Injured Persons dataset, made publicly available by Open Data Toronto. The dataset contains information on traffic incidents in Toronto where individuals were killed or seriously injured, providing key insights into the factors associated with severe collisions. The data, which includes variables related to the time, location, conditions, and parties involved in each collision, serves as an essential resource for understanding patterns in road safety and identifying high-risk factors.
 
 ## Measurement
 	
-Some paragraphs about how we go from a phenomena in the world to an entry in the dataset.
+The Motor Vehicle Collisions Involving Killed or Seriously Injured Persons dataset from Open Data Toronto provides critical information on traffic incidents involving fatalities or serious injuries in Toronto since 2006. Compiled and maintained by the Toronto Police Service, the dataset captures a variety of incident-specific metrics, including severity, driver condition, road surface condition, and lighting at the time of each collision. Incident severity is categorized as either fatal or serious injury, while environmental conditions, such as road surface (e.g., dry, wet, icy) and lighting (e.g., artificial or natural light), are recorded qualitatively. Each record also includes a timestamp and a location, though the precise geographic coordinates are adjusted to the nearest road intersection to protect the privacy of those involved.
+
+Despite its value, this dataset has limitations that impact the accuracy and applicability of analyses. Most notably, the location of each incident is deliberately offset, meaning that any geographic analysis may not reflect the exact sites of collisions, particularly at the neighborhood or divisional level. Additionally, the dataset is limited to incidents involving significant injuries or fatalities, meaning it does not account for minor or unreported collisions. This focus on severe incidents may lead to an overrepresentation of high-severity events, which could influence interpretations of broader traffic patterns in Toronto. Furthermore, while the dataset aims to provide timely and complete information, the Toronto Police Service does not guarantee its accuracy, completeness, or timeliness, cautioning against direct comparisons with other sources of traffic or crime data. This dataset predominantly consists of categorical variables describing conditions and severity, with minimal quantitative data aside from incident timestamps, making it a qualitative yet powerful resource for studying serious traffic events in Toronto.x
+
+## Data Cleaning
+
+The raw motor vehicle collision data underwent a comprehensive cleaning process to prepare it for analysis, ensuring the dataset was both relevant and consistent for the study’s objectives. Initially, only key columns were selected from the raw dataset, including `ACCNUM` (Accident Number), `DATE`, `TIME`, `ROAD_CLASS` (Road Class), `DISTRICT`, `TRAFFCTL` (Traffic Control Type), `VISIBILITY`, `LIGHT` (Light Condition), `RDSFCOND` (Road Surface Condition), `ACCLOC` (Accident Location), `ACCLASS` (Accident Class), `IMPACTYPE` (Impact Type), `INVTYPE` (Involvement Type), `INVAGE` (Involved Person Age), `INJURY`, and `DRIVCOND` (Driver Condition). This selection ensured that only the most pertinent information was included for examining factors associated with injury severity.
+
+Rows with missing or irrelevant data in critical columns, such as `INJURY`, `DRIVCOND`, `LIGHT`, and `RDSFCOND`, were filtered out to maintain data integrity and focus on valid observations. Injury severity was then simplified by converting it into a binary variable (`INJURY_SEVERE`), where incidents classified as "Fatal" were assigned a value of 1, and all other cases were coded as 0, distinguishing between fatal and non-fatal outcomes.
+
+Categories within certain variables were combined to facilitate a more cohesive analysis. For `DRIVCOND` (Driver Condition), cases indicating impairment due to alcohol or drugs were grouped under "Impaired," while other conditions such as inattentiveness, fatigue, or medical issues were combined under "Distracted/Impaired." The "Normal" condition was retained as is, while all other conditions were grouped under "Other."
+
+Similarly, `RDSFCOND` (Road Surface Condition) categories were simplified. "Good Condition" was designated for cases with no adverse road conditions, while surfaces like ice, snow, or gravel were grouped under "Hazardous Surface." "Wet" was kept as a separate category, and any other conditions were labeled as "Other." For `LIGHT` (Light Condition), natural lighting conditions such as daylight, dawn, and dusk were grouped as "Natural Light," while artificial lighting conditions were grouped as "Artificial Light." All other conditions were categorized as "Other."
+
+After grouping these variables, the categorical groupings were converted to factors to enable effective modeling. The cleaned dataset was then saved as a parquet file, ready for analysis in the next stages of the study.
+
 
 ## Outcome variables
 
-Add graphs, tables and text. Use sub-sub-headings for each outcome variable or update the subheading to be singular.
+The primary outcome variable in this study is Injury Severity, which categorizes each collision based on the severity of injuries sustained by the individuals involved. Injury severity is coded as a binary variable, where "0" represents non-fatal or minor injuries, and "1" denotes fatalities or serious injuries. This classification allows for an assessment of factors contributing to the likelihood of severe outcomes in motor vehicle collisions.
 
+By focusing on collisions resulting in significant harm, this outcome variable highlights critical cases of interest for road safety analysis, as severe injuries or fatalities often have lasting impacts on communities and may indicate areas where safety improvements are urgently needed. This binary categorization also simplifies the statistical analysis, facilitating the application of logistic regression models to estimate the probability of severe injuries under varying conditions.
 
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+Analyzing injury severity in conjunction with predictor variables such as driver condition, road surface condition, and light condition helps identify the circumstances under which the risk of severe outcomes is heightened. This outcome measure serves as a crucial indicator for assessing and improving traffic safety policies, as it reflects the most serious consequences of road incidents and directs attention to factors that could reduce such outcomes.
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+#| include: false
+#| warning: false
+#| message: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+# read in cleaned data
+collision_data <- read_parquet(here::here("data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet"))
+
+# Set up factors and select relevant columns
+collision_data <- 
+  collision_data |>
+  mutate(
+    INJURY_SEVERE = as_factor(INJURY_SEVERE),
+    DRIVCOND_GROUP = factor(
+      DRIVCOND_GROUP,
+      levels = c(
+        "Normal",
+        "Distracted/Impaired",
+        "Impaired",
+        "Other"
+      )
+    ),
+    RDSFCOND_GROUP = factor(
+      RDSFCOND_GROUP,
+      levels = c(
+        "Good Condition",
+        "Hazardous Surface",
+        "Wet",
+        "Other"
+      )
+    ),
+    LIGHT_GROUP = factor(
+      LIGHT_GROUP,
+      levels = c(
+        "Artificial Light",
+        "Natural Light",
+        "Other"
+      )
+    )
+  ) |>
+  select(INJURY_SEVERE, DRIVCOND_GROUP, RDSFCOND_GROUP, LIGHT_GROUP)
+
 ```
 
-Talk more about it.
+```{r}
+#| label: tbl-clean-data
+#| tbl-cap: "Preview of the cleaned Motor Vehicle Collisions dataset"
+#| message: false
+#| echo: false
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+# Rename columns for display purposes
+colnames(collision_data) <- c("Injury Severity", "Driver Condition", "Road Surface Condition", "Light Condition")
+
+# Display the first 5 rows of the selected columns
+collision_data[1:5, 1:4] |>
+  kable()
+
+```
 
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: tbl-summary
+#| tbl-cap: "Statistics summary of the cleaned Motor Vehicle Collisions dataset"
+#| message: false
+#| echo: false
+
+# Basic summary of the data
+summary(collision_data)
+
+```
+
+## Predictor variables
+
+@fig-driver-condition shows the distribution of injury severity based on driver condition at the time of the collision. The majority of collisions involve drivers categorized as "Other" or "Normal," with very few incidents involving drivers who were impaired or distracted/impaired. Despite the low frequency, collisions involving impaired or distracted drivers show a relatively higher proportion of serious injuries (indicated by "1") compared to the "Normal" category. This highlights that impaired or distracted driving is associated with an increased likelihood of severe outcomes, although it is less common overall.
+
+As shown in @fig-road-surface, the road surface condition at the time of the collision also influences injury severity. The majority of incidents occurred under "Other" or "Wet" conditions, with very few taking place on hazardous or good road surfaces. Wet and hazardous surfaces are associated with a slightly higher proportion of severe injuries, emphasizing that adverse road conditions can elevate the risk of serious outcomes in collisions.
+
+@fig-light-condition illustrates the distribution of injury severity by light condition, indicating that most incidents occur under "Natural Light" conditions, followed by "Artificial Light." Although the majority of collisions occur during natural light conditions, the proportion of severe injuries is slightly higher in cases with "Other" or "Artificial Light." This may suggest that low visibility or artificial lighting conditions marginally contribute to the severity of collisions.
+
+
+```{r}
+#| label: fig-driver-condition
+#| fig-cap: The distribution of injury severity by driver condition
 #| echo: false
 #| warning: false
 #| message: false
 
-analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
+# Rename columns for clarity in the plot
+colnames(collision_data) <- c("injury_severity", "driver_condition", "road_surface_condition", "light_condition")
 
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
+# Plot: Distribution of Injury Severity by Driver Condition
+collision_data |>
+  ggplot(aes(x = driver_condition, fill = injury_severity)) +
+  geom_bar(position = "dodge", width = 0.5) +
   theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+  coord_flip() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Driver Condition",
+    y = "Number of Collisions",
+    fill = "Injury Severity"
+  )
+
 ```
 
-Talk way more about it. 
+```{r}
+#| label: fig-road-surface
+#| fig-cap: The distribution of injury severity by road surface condition
+#| echo: false
+#| warning: false
+#| message: false
 
-## Predictor variables
+# Plot: Distribution of Injury Severity by Road Surface Condition
+collision_data |>
+  ggplot(aes(x = road_surface_condition, fill = injury_severity)) +
+  geom_bar(position = position_dodge2(width = 0.5, preserve = "single")) +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Road Surface Condition",
+    y = "Number of Collisions",
+    fill = "Injury Severity"
+  )
 
-Add graphs, tables and text.
+```
 
-Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
+```{r}
+#| label: fig-light-condition
+#| fig-cap: The distribution of injury severity by light condition
+#| echo: false
+#| warning: false
+#| message: false
+
+# Plot: Distribution of Injury Severity by Light Condition
+collision_data |>
+  ggplot(aes(x = light_condition, fill = injury_severity)) +
+  geom_bar(position = position_dodge2(width = 0.5, preserve = "single")) +
+  coord_flip() +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  labs(
+    x = "Light Condition",
+    y = "Number of Collisions",
+    fill = "Injury Severity"
+  )
+
+```
 
 
 
+# Model {#sec-model}
 
+In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between injury severity in motor vehicle collisions and three key factors: driver condition, road surface condition, and lighting condition at the time of the incident. Background details and diagnostics are included in [Appendix -@sec-model-details].
 
+## Model Set-up
 
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+The model is formulated as follows:
 
 \begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
+y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
+\mbox{logit}(\pi_i) &= \alpha + \beta_1 \times \mbox{DRIVCOND\_GROUP}_i + \beta_2 \times \mbox{RDSFCOND\_GROUP}_i + \beta_3 \times \mbox{LIGHT\_GROUP}_i \\
 \alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
+\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_2 &\sim \mbox{Normal}(0, 2.5) \\
+\beta_3 &\sim \mbox{Normal}(0, 2.5)
 \end{align}
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+In this model, $y_i$ represents the binary outcome variable indicating whether a collision resulted in a severe injury (1 for severe/fatal injuries, 0 for non-fatal injuries). The probability of a severe injury ($\pi_i$) is modeled using a logistic link function, which expresses the log-odds of a severe injury as a linear combination of the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$, $\beta_3$) associated with the predictor variables: driver condition (`DRIVCOND_GROUP`), road surface condition (`RDSFCOND_GROUP`), and light condition (`LIGHT_GROUP`), respectively.
 
+The intercept ($\alpha$) and each coefficient ($\beta_1$, $\beta_2$, $\beta_3$) are assigned normal prior distributions with a mean of 0 and a standard deviation of 2.5. These priors serve to regularize the model, ensuring that estimates remain reasonable given the data.
 
-### Model justification
+We chose this modeling approach for several reasons. Logistic regression is appropriate for binary outcome variables, making it ideal for analyzing injury severity. Bayesian methods allow us to incorporate prior knowledge and account for uncertainty, leading to more robust parameter estimates. While alternative modeling approaches, such as linear regression, were considered, Bayesian logistic regression was selected due to the binary nature of the outcome variable.
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+The model was implemented using the `rstanarm` package [@citeRstanarm] in R [@citeR]. The posterior distributions of the parameters were estimated using Markov Chain Monte Carlo (MCMC) sampling. To optimize runtime, we randomly sampled 1000 observations from the dataset with a random seed of 215. Diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix @sec-model-details).
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+## Model Justification
+
+Each predictor in the model represents a specific condition under which a collision occurred, with hypothesized effects on injury severity. For driver condition, we expect that "Impaired" and "Distracted/Impaired" drivers are more likely to cause severe or fatal collisions due to reduced driving ability. Similarly, drivers under "Other" conditions may face various distractions or impairments, potentially increasing the severity of collisions. Conversely, drivers classified as "Normal" are anticipated to exhibit a reduced risk of severe outcomes.
+
+Regarding road surface condition, we hypothesize that hazardous surfaces, such as ice or snow, may reduce injury severity because drivers often reduce speed in these conditions. Wet surfaces, however, may slightly increase severity due to decreased traction, although this effect may be less pronounced than hazardous conditions.
+
+For light condition, we hypothesize that poor visibility under artificial or low lighting conditions may elevate injury severity, while natural light may reduce severity by improving visibility.
 
 
 # Results
 
 Our results are summarized in @tbl-modelresults.
 
+
 ```{r}
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
 #| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
+#| tbl-cap: "Explanatory model Injury Severity Prediction (n = 1000)"
 
-modelsummary::modelsummary(
+injury_severity_model <-
+  readRDS(file = here::here("models/injury_severity_model.rds"))
+
+modelsummary(
   list(
-    "First model" = first_model
+    "Injury Severity" = injury_severity_model
   ),
-  statistic = "mad",
-  fmt = 2
-)
+  statistic = "mad"
+  )
+
 ```
 
+### Results
 
+The results of the logistic regression model, as shown in Table 3, illustrate the relationships between injury severity in motor vehicle collisions and the predictor variables: driver condition, road surface condition, and light condition.
 
+The **intercept** of the model is -0.820, which represents the baseline log-odds of a severe injury occurring when all other predictors are at their reference levels. The coefficients for each predictor indicate how the log-odds of a severe injury change with respect to the baseline.
 
-# Discussion
+#### Driver Condition
 
-## First discussion point {#sec-first-point}
+- **Impaired**: The coefficient for `DRIVCOND_GROUPImpaired` is 0.946 (SE = 0.306), suggesting that impaired driving significantly increases the likelihood of severe injuries in collisions compared to the baseline category (likely "Normal"). This positive coefficient indicates that impaired driving has a considerable association with severe outcomes.
+- **Normal**: The coefficient for `DRIVCOND_GROUPNormal` is -0.730 (SE = 0.207), suggesting a decreased likelihood of severe injury relative to other conditions.
+- **Other**: With a coefficient of 1.352 (SE = 0.169), "Other" driver conditions are also associated with a higher risk of severe injury, even more so than impaired driving.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+#### Road Surface Condition
 
-## Second discussion point
+- **Hazardous Surface**: The coefficient for `RDSFCOND_GROUPHazardous Surface` is -3.282 (SE = 0.489), indicating a significant decrease in the likelihood of severe injury compared to "Good Condition" surfaces. This result may suggest that drivers exercise more caution or reduce speed on hazardous surfaces, potentially mitigating the severity of collisions.
+- **Other**: The coefficient for `RDSFCOND_GROUPOther` is -2.864 (SE = 0.410), which also shows a reduction in the likelihood of severe injury under unspecified surface conditions.
+- **Wet**: The coefficient for `RDSFCOND_GROUPWet` is -2.898 (SE = 0.418), similarly indicating a reduced risk of severe injury on wet surfaces.
 
-Please don't use these as sub-heading labels - change them to be what your point actually is.
+#### Light Condition
 
-## Third discussion point
+- **Natural Light**: The coefficient for `LIGHT_GROUPNatural Light` is -0.186 (SE = 0.081), suggesting a slight reduction in the likelihood of severe injury compared to artificial light, though this effect is smaller than for the road surface conditions.
+- **Other**: With a coefficient of -0.043 (SE = 0.098), the "Other" category for light conditions does not show a significant impact on injury severity, suggesting that lighting variations may have minimal influence on collision severity in this dataset.
 
-## Weaknesses and next steps
+Overall, the model results provide insights into how different conditions are associated with the severity of injuries in motor vehicle collisions. Factors such as impaired driving and unspecified road conditions significantly increase the likelihood of severe outcomes, while hazardous and wet surfaces appear to be associated with a reduced risk of severe injuries, possibly due to changes in driver behavior under these conditions.
 
-Weaknesses and next steps should also be included.
+# Discussion {#sec-discussion}
+
+## Relationship between Driver Condition and Injury Severity
+
+The analysis shows that driver condition plays a crucial role in determining the severity of injuries in motor vehicle collisions. Drivers categorized as "Impaired" or "Other" are associated with a significantly higher risk of severe injuries, supporting existing research on the dangers of impaired driving. Studies have shown that alcohol and drug impairment reduce reaction times and decision-making abilities, greatly increasing the likelihood of serious collisions [@NHTSA_2021]. In Toronto, where this data was collected, impaired driving remains one of the primary causes of road fatalities, underscoring the importance of targeted interventions to address this issue. Policies such as stricter DUI (Driving Under the Influence) regulations, public awareness campaigns, and enhanced enforcement could help mitigate the risks associated with impaired driving. Conversely, "Normal" driving conditions show a lower likelihood of severe injury, emphasizing the impact of driver attentiveness and sobriety on road safety.
+
+## Relationship between Road Surface Condition and Injury Severity
+
+Road surface conditions also influence injury severity in collisions, although perhaps not in the ways one might expect. The results indicate that hazardous surfaces, like icy or snowy roads, are associated with a lower likelihood of severe injuries. This finding could be explained by the fact that drivers may adjust their behavior on hazardous surfaces by reducing speed or increasing caution. Research suggests that adverse road conditions encourage safer driving practices, which can counterintuitively reduce injury severity in the event of an accident [@RoadSafety]. On the other hand, wet surfaces still increase the likelihood of severe injuries compared to good conditions, likely due to reduced tire traction leading to loss of control. These insights suggest that public safety campaigns encouraging cautious driving during adverse weather conditions could be effective, alongside infrastructure improvements such as better drainage to reduce wet road hazards.
+
+## Relationship between Light Condition and Injury Severity
+
+The model results indicate that light conditions play a minor role in injury severity, with a slight reduction in risk associated with natural light. This finding aligns with existing research showing that visibility is generally better in natural light, allowing drivers to detect and respond to hazards more effectively. Artificial light and "Other" lighting conditions are associated with a marginal increase in injury severity, which may be attributed to reduced visibility in low-light conditions or under artificial lighting [@LightingSafety]. While the effect is smaller than for driver and road conditions, this finding highlights the importance of well-maintained and properly illuminated roadways, especially in high-traffic areas and intersections.
+
+## Limitations
+
+### Data Limitations Due to Geographic Offsetting
+
+One limitation of this dataset is the geographic offsetting of incident locations to protect privacy. While necessary for privacy concerns, this adjustment may reduce the accuracy of analyses that focus on specific intersections or neighborhoods. For instance, analyses attempting to identify collision "hotspots" or evaluate the effectiveness of localized safety measures could be skewed. Future research may benefit from accessing more precise location data where privacy can still be safeguarded through other methods, such as anonymization.
+
+### Underrepresentation of Non-Severe Incidents
+
+The dataset only includes collisions that resulted in severe injuries or fatalities, excluding minor incidents that also provide valuable insights into road safety. This focus on high-severity incidents may lead to an overrepresentation of conditions associated with severe outcomes, potentially skewing the findings. Incorporating data on less severe incidents would allow for a more comprehensive analysis of risk factors across all collision types, enhancing the ability to develop preventive measures that address both severe and minor incidents.
+
+## Future Steps
+
+Further research should consider expanding the dataset to include a broader range of collision outcomes, capturing minor injuries and non-injury collisions. This would provide a more holistic view of road safety in Toronto, identifying conditions that contribute to all types of collisions. Additionally, exploring interactions between environmental and human factors—such as how road surface conditions might interact with driver behavior—could yield more nuanced insights. Policymakers and city planners could benefit from such research to implement multifaceted safety measures, ultimately creating a safer driving environment in Toronto.
 
 \newpage
 
@@ -203,53 +365,159 @@ Weaknesses and next steps should also be included.
 
 ## Posterior predictive check
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+In @fig-post_dist we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-post_prior we compare the posterior with the prior. This shows... 
 
 ```{r}
-#| eval: true
+#| label: fig-post_dist
+#| fig-cap: Posterior distribution for logistic regression model 
 #| echo: false
-#| message: false
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+#| message: false
+#| 
 
-pp_check(first_model) +
-  theme_classic() +
+pp_check(injury_severity_model) +
   theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
 ```
+
+```{r}
+#| label: fig-post_prior
+#| fig-cap: Comparing the posterior with the prior 
+#| echo: false
+#| warning: false
+#| message: false
+
+#### Workspace setup ####
+library(tidyverse)
+library(rstanarm)
+library(here)
+library(arrow)
+
+#### Read cleaned data ####
+analysis_data <- read_parquet(here::here("data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet"))
+
+# Ensure that the grouped variables are being used
+analysis_data$DRIVCOND_GROUP <- factor(analysis_data$DRIVCOND_GROUP)
+analysis_data$LIGHT_GROUP <- factor(analysis_data$LIGHT_GROUP)
+analysis_data$RDSFCOND_GROUP <- factor(analysis_data$RDSFCOND_GROUP)
+
+# Sample 1000 observations for consistent model comparison
+set.seed(304)
+injury_data_reduced <- 
+  analysis_data |> 
+  slice_sample(n = 1000)
+
+# Ensure the model is loaded (or re-fit if needed)
+if (!exists("injury_severity_model")) {
+  injury_severity_model <- readRDS(here::here("models/injury_severity_model.rds"))
+}
+
+# Generate the Posterior vs. Prior plot
+posterior_vs_prior(injury_severity_model, size = 0.1) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(hjust = 1, vjust = 0.5),
+    text = element_text(size = 8)
+  ) +
+  guides(color = guide_legend(ncol = 4)) +
+  coord_flip()
+
+```
+
 
 ## Diagnostics
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+@fig-trace1 and @fig-trace2 are trace plots. It shows... This suggests...
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+@fig-rhat is a Rhat plot. It shows... This suggests...
+
+## Markov Chain Monte Carlo Convergence Check
+
+# Trace plots and Rhat plots for the `injury_severity_model`
 
 ```{r}
 #| echo: false
 #| eval: true
 #| message: false
 #| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
+#| label: fig-trace1
+#| fig-cap: "Trace plot of intercept and driver condition"
+#| fig-subcap: ["Trace plot of Intercept", "Trace plot of DRIVCOND_GROUPImpaired", "Trace plot of DRIVCOND_GROUPNormal"]
 #| layout-ncol: 2
 
-plot(first_model, "trace")
+# Trace plots for the intercept and selected levels of DRIVCOND_GROUP
+plot(injury_severity_model, "trace", "(Intercept)")
+plot(injury_severity_model, "trace", "DRIVCOND_GROUPImpaired")
+plot(injury_severity_model, "trace", "DRIVCOND_GROUPNormal")
 
-plot(first_model, "rhat")
 ```
 
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-trace2
+#| fig-cap: "Trace plot of road surface and light condition"
+#| fig-subcap: ["Trace plot of RDSFCOND_GROUPHazardous Surface", "Trace plot of RDSFCOND_GROUPWet", "Trace plot of LIGHT_GROUPNatural Light", "Trace plot of LIGHT_GROUPArtificial Light"]
+#| layout-ncol: 2
 
+# Trace plots for selected levels of RDSFCOND_GROUP and LIGHT_GROUP
+plot(injury_severity_model, "trace", "RDSFCOND_GROUPHazardous Surface")
+plot(injury_severity_model, "trace", "RDSFCOND_GROUPWet")
+plot(injury_severity_model, "trace", "LIGHT_GROUPNatural Light")
+
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+#| label: fig-rhat
+#| fig-cap: "Rhat plot for MCMC convergence"
+
+# Rhat plot to check MCMC convergence
+plot(injury_severity_model, "rhat")
+
+```
+
+## 90% Credibility Interval {#sec-credibility-interval}
+
+@fig-modelresults1 and @fig-modelresults2 are 90% credibility interval plots for the injury severity predictors.
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults1
+#| fig-cap: "Credible intervals for predictors of injury severity"
+
+modelplot(injury_severity_model, conf_level = 0.90, size = 0.2) +
+  labs(x = "90% credibility interval") +
+  theme(axis.text.y = element_text(size = 6))
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-modelresults2
+#| fig-cap: "Credible intervals for predictors of injury severity with x-axis limits"
+
+# Create the model plot
+model_plot <- modelplot(injury_severity_model, conf_level = 0.90, size = 0.2)
+
+# Modify the x-axis limits
+model_plot + xlim(-5, 5) +  # Adjust the limits as needed
+  labs(x = "90% Credibility Interval") +
+  theme(axis.text.y = element_text(size = 6))
+
+```
 
 \newpage
 
