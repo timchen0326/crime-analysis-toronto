@@ -4,7 +4,7 @@ subtitle: "My subtitle if needed"
 author: 
   - First author
   - Another author
-thanks: "Code and data are available at: [https://github.com/RohanAlexander/starter_folder](https://github.com/RohanAlexander/starter_folder)."
+thanks: "Code and data are available at: [https://github.com/timchen0326/crime-analysis-toronto](https://github.com/timchen0326/crime-analysis-toronto)."
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
@@ -37,19 +37,24 @@ library(kableExtra)
 
 ## Overview
 
-This paper investigates the factors influencing the severity of motor vehicle collisions, with a particular focus on the conditions at the time of each incident. Motor vehicle collisions remain a leading cause of death and severe injury globally, and understanding the circumstances under which these incidents result in severe outcomes is critical for improving road safety. By examining data from the city of Toronto, we aim to identify how driver condition, road surface condition, and lighting condition contribute to the likelihood of a collision resulting in a severe injury or fatality. The findings of this study can inform targeted road safety policies and interventions to mitigate the risk of severe traffic accidents.
+This study examines the factors influencing the likelihood of violent crimes in Toronto, focusing on two important predictors: the type of premises where the crime occurred and the time of day. Violent crime, encompassing offenses such as assault and robbery, poses significant risks to community safety and requires evidence-based strategies for prevention. Non-violent crimes, such as theft and property-related offenses, provide a contrasting baseline for analysis.
+
+Using a detailed dataset. from the Toronto Police Service, this research aims to uncover patterns and relationships between the environment, timing, and the probability of violent crimes. By leveraging Bayesian logistic regression modeling, the study accounts for uncertainty while using prior knowledge to generate practical findings. The findings aim to inform crime prevention efforts, resource allocation, and urban safety policies by identifying high-risk contexts for violence.
 
 
 ## Estimand
-The estimand in this paper is the probability of a severe injury (fatal outcome) in motor vehicle collisions, given specific conditions at the time of the incident, including driver condition, road surface, and lighting conditions. Measuring this probability for all collisions is challenging due to limitations in data completeness and accuracy, as not all collisions are reported or consistently documented. Additionally, the dataset contains broad categories such as "Other" for road and driver conditions, which may obscure specific contextual details. To estimate this probability, we employ a logistic regression model on a sample dataset of collisions from Toronto’s open data portal, allowing us to approximate the likelihood of severe injuries under varying conditions.
+The primary estimand of this study is the probability of a violent crime occurring given specific premises (e.g., residential, commercial, or transit) and the time of day (e.g., early morning, evening). Violent crimes include serious offenses such as assaults and robberies, while non-violent crimes encompass thefts and similar offenses. This research employs a Bayesian logistic regression model to estimate these probabilities, accounting for uncertainty and using prior knowledge.
 
 ## Results Summary
 
-The results of our logistic regression model indicate significant associations between injury severity and certain predictor variables. Notably, impaired driver conditions and adverse lighting environments are associated with an increased likelihood of severe injuries. However, hazardous road surfaces—counterintuitively—appear to be linked with a lower probability of severe injury, which could reflect behavioral adjustments made by drivers under difficult road conditions. This analysis highlights the complex interplay between environmental and human factors in determining collision outcomes, underscoring the need for multifaceted safety measures.
+The results of this study provide clarity on the relationship between premises type, time of day, and the likelihood of a crime being violent. Premises such as "Transit" and "Outside" exhibit greater odds of violent crimes compared to the reference category ("Apartment"), reflecting their open and public nature, which may increase opportunities for conflicts. Conversely, premises like "Commercial," "Educational," and "House" are associated with a lower likelihood of violent crimes, underscoring the role of structural and social controls in reducing violence.
+
+Time of day also plays a significant role, with "Afternoon" and "Evening" periods showing elevated odds of violent crimes compared to the baseline "Early Morning." These findings align with patterns of increased social interactions and activities during these periods. The credible interval plots further confirm the statistical significance of these predictors, emphasizing their impact on crime likelihood. Overall, the results highlight patterns that can guide focused crime prevention strategies in high-risk locations and time periods.
+
 
 ## Why This Study Matters
 
-This study is important for several reasons. First, it provides actionable insights into the specific conditions under which motor vehicle collisions are most likely to result in severe injury or death. This information can guide policymakers and road safety advocates in designing effective interventions. For example, enhanced education campaigns targeting impaired driving, improvements in road lighting infrastructure, and better management of road surfaces in hazardous conditions could collectively contribute to reducing collision severity. Additionally, this study uses a Bayesian logistic regression model, which allows for the incorporation of prior knowledge and provides a robust framework for understanding the factors influencing injury severity. In a broader sense, understanding the determinants of collision severity can support efforts to create safer urban environments, thereby protecting the well-being of residents and reducing the societal costs associated with severe traffic incidents.
+Understanding the contextual factors contributing to violent crimes can help city planners and policymakers allocate safety interventions effectively. This research focuses on premises and times of day where the likelihood of violence is highest, enabling tailored prevention strategies. The findings from this study can directly impact resource allocation for policing and urban planning, potentially reducing crime rates and enhancing public safety.
 
 ## Paper Structure
 
@@ -59,182 +64,202 @@ The remainder of this paper is structured as follows. In @sec-data, we present a
 
 ## Overview
 
-We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
+We use the statistical programming language R [@citeR] to process, clean, and analyze the dataset for this study. Our data is sourced from the Open Data Toronto portal [@OpenDataToronto], specifically from the "Motor Vehicle Collisions Involving Killed or Seriously Injured Persons" dataset, which captures detailed information on traffic incidents in Toronto where individuals were either killed or seriously injured. This dataset, compiled by the Toronto Police Service, includes variables that record the time, location, environmental conditions, and specific parties involved in each collision, showing factors that may increase the risk of severe outcomes.
 
-This study utilizes data from the Motor Vehicle Collisions Involving Killed or Seriously Injured Persons dataset, made publicly available by Open Data Toronto. The dataset contains information on traffic incidents in Toronto where individuals were killed or seriously injured, providing key insights into the factors associated with severe collisions. The data, which includes variables related to the time, location, conditions, and parties involved in each collision, serves as an essential resource for understanding patterns in road safety and identifying high-risk factors.
+The detailed information within the dataset enables a rigorous analysis of patterns in collision severity. By examining factors such as driver condition, road surface, and lighting conditions, we aim to identify high-risk scenarios that may require targeted safety interventions. Following principles outlined in "Telling Stories with Data" [@tellingstories], this study prioritizes transparency and reproducibility in presenting data-driven findings that can inform road safety policies.
 
 ## Measurement
-	
-The Motor Vehicle Collisions Involving Killed or Seriously Injured Persons dataset from Open Data Toronto provides critical information on traffic incidents involving fatalities or serious injuries in Toronto since 2006. Compiled and maintained by the Toronto Police Service, the dataset captures a variety of incident-specific metrics, including severity, driver condition, road surface condition, and lighting at the time of each collision. Incident severity is categorized as either fatal or serious injury, while environmental conditions, such as road surface (e.g., dry, wet, icy) and lighting (e.g., artificial or natural light), are recorded qualitatively. Each record also includes a timestamp and a location, though the precise geographic coordinates are adjusted to the nearest road intersection to protect the privacy of those involved.
 
-Despite its value, this dataset has limitations that impact the accuracy and applicability of analyses. Most notably, the location of each incident is deliberately offset, meaning that any geographic analysis may not reflect the exact sites of collisions, particularly at the neighborhood or divisional level. Additionally, the dataset is limited to incidents involving significant injuries or fatalities, meaning it does not account for minor or unreported collisions. This focus on severe incidents may lead to an overrepresentation of high-severity events, which could influence interpretations of broader traffic patterns in Toronto. Furthermore, while the dataset aims to provide timely and complete information, the Toronto Police Service does not guarantee its accuracy, completeness, or timeliness, cautioning against direct comparisons with other sources of traffic or crime data. This dataset predominantly consists of categorical variables describing conditions and severity, with minimal quantitative data aside from incident timestamps, making it a qualitative yet powerful resource for studying serious traffic events in Toronto.x
+The dataset used in this study is sourced from the Toronto Police Service and includes records of Major Crime Indicators (MCI) occurrences. These records capture information on five important categories of crime: Assault, Break and Enter, Auto Theft, Robbery, and Theft Over. Unlike some crime datasets, this dataset excludes occurrences classified as "unfounded," meaning that only verified incidents are included. The definition of "unfounded," provided by Statistics Canada, is: “It has been determined through police investigation that the offence reported did not occur, nor was it attempted.”
+
+The data collection process primarily relies on police-reported incidents. However, there are certain limitations in the completeness of the dataset. For example, some location coordinates are missing or left blank when the location could not be verified. Additionally, the dataset includes occurrences that are located outside the City of Toronto, which may slightly affect the analysis for Toronto-specific crime trends. 
+
+Spatial data in the dataset is provided using both the old 140-neighborhood structure and the newer 158-neighborhood structure for the City of Toronto. This dual structure ensures compatibility across different time periods and administrative updates. Temporal data includes detailed timestamps that allow crimes to be categorized by time of day and season.
+
+The unit of measurement for numerical data, such as timestamps and neighborhood IDs, is standard counts or identifiers with no inherent units. Other features, such as crime type, premises type, and time of day, are categorical variables with no associated units.
+
+Although the data provides a robust framework for understanding crime patterns in Toronto, some aspects are modeled or incomplete. For instance, location data for certain crimes may be estimated, and the dataset does not include crimes that were not reported to the police. Despite these limitations, the dataset remains a useful resource for analyzing environmental and temporal factors influencing violent and non-violent crimes in Toronto.
+
 
 ## Data Cleaning
 
-The raw motor vehicle collision data underwent a comprehensive cleaning process to prepare it for analysis, ensuring the dataset was both relevant and consistent for the study’s objectives. Initially, only key columns were selected from the raw dataset, including `ACCNUM` (Accident Number), `DATE`, `TIME`, `ROAD_CLASS` (Road Class), `DISTRICT`, `TRAFFCTL` (Traffic Control Type), `VISIBILITY`, `LIGHT` (Light Condition), `RDSFCOND` (Road Surface Condition), `ACCLOC` (Accident Location), `ACCLASS` (Accident Class), `IMPACTYPE` (Impact Type), `INVTYPE` (Involvement Type), `INVAGE` (Involved Person Age), `INJURY`, and `DRIVCOND` (Driver Condition). This selection ensured that only the most pertinent information was included for examining factors associated with injury severity.
+The raw crime data underwent a comprehensive cleaning process to prepare it for analysis, ensuring the dataset was both relevant and consistent for the study's objectives. Initially, only key columns were selected from the raw dataset, including `EVENT_UNIQUE_ID` (Unique Identifier), `REPORT_DATE` (Date of Report), `OCC_HOUR` (Hour of Occurrence), `PREMISES_TYPE` (Type of Premises), and `OFFENCE` (Offense Type). This selection ensured that only the most pertinent information was included for examining factors associated with violent crimes.
 
-Rows with missing or irrelevant data in critical columns, such as `INJURY`, `DRIVCOND`, `LIGHT`, and `RDSFCOND`, were filtered out to maintain data integrity and focus on valid observations. Injury severity was then simplified by converting it into a binary variable (`INJURY_SEVERE`), where incidents classified as "Fatal" were assigned a value of 1, and all other cases were coded as 0, distinguishing between fatal and non-fatal outcomes.
+Rows with missing or irrelevant data in important columns, such as `EVENT_UNIQUE_ID`, `PREMISES_TYPE`, `TIME_OF_DAY`, and `VIOLENT_CRIME`, were removed to maintain data integrity and focus on valid observations. Offenses were categorized as either violent or non-violent to create a binary outcome variable (`VIOLENT_CRIME`), where offenses such as "Assault" and "Robbery" were classified as violent (`1`), and crimes like "Theft" or "Break and Enter" were classified as non-violent (`0`). Offenses that did not fit into either category were excluded from the dataset.
 
-Categories within certain variables were combined to facilitate a more cohesive analysis. For `DRIVCOND` (Driver Condition), cases indicating impairment due to alcohol or drugs were grouped under "Impaired," while other conditions such as inattentiveness, fatigue, or medical issues were combined under "Distracted/Impaired." The "Normal" condition was retained as is, while all other conditions were grouped under "Other."
+To analyze temporal patterns, the `OCC_HOUR` variable was grouped into broader time categories:
 
-Similarly, `RDSFCOND` (Road Surface Condition) categories were simplified. "Good Condition" was designated for cases with no adverse road conditions, while surfaces like ice, snow, or gravel were grouped under "Hazardous Surface." "Wet" was kept as a separate category, and any other conditions were labeled as "Other." For `LIGHT` (Light Condition), natural lighting conditions such as daylight, dawn, and dusk were grouped as "Natural Light," while artificial lighting conditions were grouped as "Artificial Light." All other conditions were categorized as "Other."
+- **Early Morning**: 12 AM to 6 AM  
+- **Morning**: 6 AM to 12 PM  
+- **Afternoon**: 12 PM to 6 PM  
+- **Evening**: 6 PM to 12 AM  
 
-After grouping these variables, the categorical groupings were converted to factors to enable effective modeling. The cleaned dataset was then saved as a parquet file, ready for analysis in the next stages of the study.
+Additionally, the `PREMISES_TYPE` variable, which describes the type of location where the incident occurred, was trimmed to remove excess whitespace and ensure consistent formatting. This step was crucial to prevent unexpected NA values during analysis.
+
+The cleaning process also included filtering for crimes reported during the summer month of July, aligning the dataset with the study's focus on temporal and environmental patterns in criminal activity. After grouping, formatting, and filtering the data, all rows containing NA values in important columns were dropped to ensure a clean and analyzable dataset.
+
+Finally, the cleaned dataset was saved as a Parquet file for further analysis. This format ensures efficient storage and retrieval while preserving the structure of the data.
 
 
-## Outcome variables
 
-The primary outcome variable in this study is Injury Severity, which categorizes each collision based on the severity of injuries sustained by the individuals involved. Injury severity is coded as a binary variable, where "0" represents non-fatal or minor injuries, and "1" denotes fatalities or serious injuries. This classification allows for an assessment of factors contributing to the likelihood of severe outcomes in motor vehicle collisions.
+## Outcome variable
 
-By focusing on collisions resulting in significant harm, this outcome variable highlights critical cases of interest for road safety analysis, as severe injuries or fatalities often have lasting impacts on communities and may indicate areas where safety improvements are urgently needed. This binary categorization also simplifies the statistical analysis, facilitating the application of logistic regression models to estimate the probability of severe injuries under varying conditions.
+The primary outcome variable in this study is Violent Crime, which categorizes each incident based on whether the crime is classified as violent or non-violent. Violent crime is coded as a binary variable, where "0" represents non-violent offenses (e.g., theft, break and enter), and "1" denotes violent offenses (e.g., assault, robbery). This classification allows for an assessment of factors contributing to the likelihood of a crime being violent, providing a framework for understanding the underlying conditions associated with violent behavior.
 
-Analyzing injury severity in conjunction with predictor variables such as driver condition, road surface condition, and light condition helps identify the circumstances under which the risk of severe outcomes is heightened. This outcome measure serves as a crucial indicator for assessing and improving traffic safety policies, as it reflects the most serious consequences of road incidents and directs attention to factors that could reduce such outcomes.
+By focusing on crimes involving violence, this outcome variable highlights important cases of interest for public safety and crime prevention efforts, as violent offenses often have severe consequences for victims and communities. This binary categorization simplifies the statistical analysis, enabling the application of logistic regression models to estimate the probability of violent crimes under varying conditions.
+
+Analyzing violent crime in conjunction with predictor variables such as premises type and time of day helps identify the circumstances under which the risk of violence is heightened. This outcome measure serves as a crucial indicator for assessing and improving community safety policies, as it reflects the most serious consequences of criminal activity and directs attention to factors that could reduce violent incidents.
+
 
 ```{r}
 #| include: false
 #| warning: false
 #| message: false
 
-# read in cleaned data
-collision_data <- read_parquet(here::here("data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet"))
+#### Read in cleaned data ####
+crime_data <- read_parquet(here::here("data/02-analysis_data/cleaned_crime_data_for_model.parquet"))
 
-# Set up factors and select relevant columns
-collision_data <- 
-  collision_data |>
+#### Set up factors and select relevant columns ####
+crime_data <- 
+  crime_data |>
   mutate(
-    INJURY_SEVERE = as_factor(INJURY_SEVERE),
-    DRIVCOND_GROUP = factor(
-      DRIVCOND_GROUP,
+    # Convert outcome variable to factor
+    VIOLENT_CRIME = as_factor(VIOLENT_CRIME),
+    # Ensure predictors are set as factors with meaningful levels
+    PREMISES_TYPE = factor(
+      PREMISES_TYPE,
       levels = c(
-        "Normal",
-        "Distracted/Impaired",
-        "Impaired",
-        "Other"
+        "Apartment",  # Example level
+        "House",   # Example level
+        "Commercial",       # Example level
+        "Outside",
+        "Educational",
+        "Transit",
+        "Other"        # Ensure levels match your data
       )
     ),
-    RDSFCOND_GROUP = factor(
-      RDSFCOND_GROUP,
+    TIME_OF_DAY = factor(
+      TIME_OF_DAY,
       levels = c(
-        "Good Condition",
-        "Hazardous Surface",
-        "Wet",
-        "Other"
-      )
-    ),
-    LIGHT_GROUP = factor(
-      LIGHT_GROUP,
-      levels = c(
-        "Artificial Light",
-        "Natural Light",
-        "Other"
+        "Early Morning",
+        "Morning",
+        "Afternoon",
+        "Evening"
       )
     )
   ) |>
-  select(INJURY_SEVERE, DRIVCOND_GROUP, RDSFCOND_GROUP, LIGHT_GROUP)
+  # Select relevant columns for modeling
+  select(VIOLENT_CRIME, PREMISES_TYPE, TIME_OF_DAY)
 
 ```
 
 ```{r}
 #| label: tbl-clean-data
-#| tbl-cap: "Preview of the cleaned Motor Vehicle Collisions dataset"
+#| tbl-cap: "Preview of the cleaned Crime dataset"
 #| message: false
 #| echo: false
 
 # Rename columns for display purposes
-colnames(collision_data) <- c("Injury Severity", "Driver Condition", "Road Surface Condition", "Light Condition")
+colnames(crime_data) <- c("Violent Crime", "Premises Type", "Time of Day")
 
 # Display the first 5 rows of the selected columns
-collision_data[1:5, 1:4] |>
+crime_data[1:5, 1:3] |>
   kable()
 
 ```
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: "Statistics summary of the cleaned Motor Vehicle Collisions dataset"
+#| tbl-cap: "Summary statistics of the cleaned Crime dataset"
 #| message: false
 #| echo: false
 
-# Basic summary of the data
-summary(collision_data)
+# Generate a summary and render it as a table
+capture.output(summary(crime_data)) |>
+  as.data.frame() |>
+  knitr::kable(col.names = c("Summary Statistics"))
 
 ```
 
 ## Predictor variables
 
-@fig-driver-condition shows the distribution of injury severity based on driver condition at the time of the collision. The majority of collisions involve drivers categorized as "Other" or "Normal," with very few incidents involving drivers who were impaired or distracted/impaired. Despite the low frequency, collisions involving impaired or distracted drivers show a relatively higher proportion of serious injuries (indicated by "1") compared to the "Normal" category. This highlights that impaired or distracted driving is associated with an increased likelihood of severe outcomes, although it is less common overall.
+## Predictor Variables
 
-As shown in @fig-road-surface, the road surface condition at the time of the collision also influences injury severity. The majority of incidents occurred under "Other" or "Wet" conditions, with very few taking place on hazardous or good road surfaces. Wet and hazardous surfaces are associated with a slightly higher proportion of severe injuries, emphasizing that adverse road conditions can elevate the risk of serious outcomes in collisions.
+@fig-premises-type illustrates the distribution of violent versus non-violent crimes across different premises types. The results show that the highest number of crimes, both violent and non-violent, occur in "Outside" locations, followed by "Apartment" premises. Notably, violent crimes significantly outnumber non-violent ones in "Outside" locations, while "Apartments" and "Houses" have a more balanced distribution between the two crime types. Premises categorized as "Educational," "Transit," and "Other" show relatively low numbers of both violent and non-violent crimes, with "Educational" premises having the fewest incidents overall.
 
-@fig-light-condition illustrates the distribution of injury severity by light condition, indicating that most incidents occur under "Natural Light" conditions, followed by "Artificial Light." Although the majority of collisions occur during natural light conditions, the proportion of severe injuries is slightly higher in cases with "Other" or "Artificial Light." This may suggest that low visibility or artificial lighting conditions marginally contribute to the severity of collisions.
+@fig-time-of-day highlights the distribution of violent versus non-violent crimes by the time of day. The data reveals that violent crimes are most common during the "Evening," followed by "Afternoon" and "Early Morning." In contrast, non-violent crimes are more evenly distributed throughout the day but still peak during the "Evening." These findings suggest that the time of day plays a important role in influencing the likelihood of violent crimes, with evenings being a particularly high-risk period.
+
+By examining these distributions, we gain insights into where and when violent crimes are most likely to occur. Understanding these patterns is essential for developing focused crime prevention strategies, such as increasing law enforcement presence in high-risk areas during evening hours or implementing community-based interventions in "Outside" locations.
+
+```{r}
 
 
 ```{r}
-#| label: fig-driver-condition
-#| fig-cap: The distribution of injury severity by driver condition
+#| label: fig-premises-type
+#| fig-cap: The distribution of violent vs. non-violent crimes by premises type
 #| echo: false
 #| warning: false
 #| message: false
 
 # Rename columns for clarity in the plot
-colnames(collision_data) <- c("injury_severity", "driver_condition", "road_surface_condition", "light_condition")
+colnames(crime_data) <- c("violent_crime", "premises_type", "time_of_day")
 
-# Plot: Distribution of Injury Severity by Driver Condition
-collision_data |>
-  ggplot(aes(x = driver_condition, fill = injury_severity)) +
+# Recode the violent_crime variable for better legend labels
+crime_data <- crime_data %>%
+  mutate(
+    violent_crime = recode(
+      violent_crime,
+      `0` = "Non-Violent",
+      `1` = "Violent"
+    )
+  )
+
+# Plot: Distribution of Violent vs. Non-Violent Crimes by Premises Type
+crime_data |>
+  ggplot(aes(x = premises_type, fill = violent_crime)) +
   geom_bar(position = "dodge", width = 0.5) +
   theme_minimal() +
   coord_flip() +
   scale_fill_brewer(palette = "Set1") +
   labs(
-    x = "Driver Condition",
-    y = "Number of Collisions",
-    fill = "Injury Severity"
+    x = "Premises Type",
+    y = "Number of Crimes",
+    fill = "Crime Type"
   )
+
 
 ```
 
 ```{r}
-#| label: fig-road-surface
-#| fig-cap: The distribution of injury severity by road surface condition
+#| label: fig-time-of-day
+#| fig-cap: The distribution of violent vs. non-violent crimes by time of day
 #| echo: false
 #| warning: false
 #| message: false
 
-# Plot: Distribution of Injury Severity by Road Surface Condition
-collision_data |>
-  ggplot(aes(x = road_surface_condition, fill = injury_severity)) +
+# Recode the violent_crime variable for better legend labels
+crime_data <- crime_data %>%
+  mutate(
+    violent_crime = recode(
+      violent_crime,
+      `0` = "Non-Violent",
+      `1` = "Violent"
+    )
+  )
+
+# Plot: Distribution of Violent vs. Non-Violent Crimes by Time of Day
+crime_data |>
+  ggplot(aes(x = time_of_day, fill = violent_crime)) +
   geom_bar(position = position_dodge2(width = 0.5, preserve = "single")) +
   coord_flip() +
   theme_minimal() +
   scale_fill_brewer(palette = "Set1") +
   labs(
-    x = "Road Surface Condition",
-    y = "Number of Collisions",
-    fill = "Injury Severity"
+    x = "Time of Day",
+    y = "Number of Crimes",
+    fill = "Crime Type"
   )
 
-```
-
-```{r}
-#| label: fig-light-condition
-#| fig-cap: The distribution of injury severity by light condition
-#| echo: false
-#| warning: false
-#| message: false
-
-# Plot: Distribution of Injury Severity by Light Condition
-collision_data |>
-  ggplot(aes(x = light_condition, fill = injury_severity)) +
-  geom_bar(position = position_dodge2(width = 0.5, preserve = "single")) +
-  coord_flip() +
-  theme_minimal() +
-  scale_fill_brewer(palette = "Set1") +
-  labs(
-    x = "Light Condition",
-    y = "Number of Collisions",
-    fill = "Injury Severity"
-  )
 
 ```
 
@@ -242,41 +267,39 @@ collision_data |>
 
 # Model {#sec-model}
 
-In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between injury severity in motor vehicle collisions and three key factors: driver condition, road surface condition, and lighting condition at the time of the incident. Background details and diagnostics are included in [Appendix -@sec-model-details].
+In our analysis, we utilized a Bayesian logistic regression model to examine the relationship between violent crime occurrence and two important predictors: premises type and time of day. By using this model, we aimed to understand how the location and timing of incidents influence the likelihood of a crime being classified as violent. Detailed model diagnostics and background are provided in [Appendix -@sec-model-details].
 
 ## Model Set-up
 
-The model is formulated as follows:
-
 \begin{align} 
-y_i|\pi_i &\sim \mbox{Bern}(\pi_i) \\
-\mbox{logit}(\pi_i) &= \alpha + \beta_1 \times \mbox{DRIVCOND\_GROUP}_i + \beta_2 \times \mbox{RDSFCOND\_GROUP}_i + \beta_3 \times \mbox{LIGHT\_GROUP}_i \\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta_1 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_2 &\sim \mbox{Normal}(0, 2.5) \\
-\beta_3 &\sim \mbox{Normal}(0, 2.5)
+y_i|\pi_i &\sim \text{Bern}(\pi_i) \\
+\text{logit}(\pi_i) &= \alpha + \beta_1 \times \text{PREMISES\_TYPE}_i + \beta_2 \times \text{TIME\_OF\_DAY}_i \\
+\alpha &\sim \text{Normal}(0, 2.5) \\
+\beta_1 &\sim \text{Normal}(0, 2.5) \\
+\beta_2 &\sim \text{Normal}(0, 2.5)
 \end{align}
 
-In this model, $y_i$ represents the binary outcome variable indicating whether a collision resulted in a severe injury (1 for severe/fatal injuries, 0 for non-fatal injuries). The probability of a severe injury ($\pi_i$) is modeled using a logistic link function, which expresses the log-odds of a severe injury as a linear combination of the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$, $\beta_3$) associated with the predictor variables: driver condition (`DRIVCOND_GROUP`), road surface condition (`RDSFCOND_GROUP`), and light condition (`LIGHT_GROUP`), respectively.
+In this model:
 
-The intercept ($\alpha$) and each coefficient ($\beta_1$, $\beta_2$, $\beta_3$) are assigned normal prior distributions with a mean of 0 and a standard deviation of 2.5. These priors serve to regularize the model, ensuring that estimates remain reasonable given the data.
+- \(y_i\) represents the binary outcome variable indicating whether a crime is classified as violent (\(1\) for violent crimes, \(0\) for non-violent crimes).
+- \(\pi_i\) is the probability of a violent crime.
+- \(\alpha\) is the intercept, representing the baseline log-odds of a violent crime when all predictors are at their reference levels.
+- \(\beta_1\) and \(\beta_2\) are the coefficients associated with the predictor variables:
+  - `PREMISES_TYPE`: the type of premises where the crime occurred.
+  - `TIME_OF_DAY`: the time of day the crime occurred.
 
-We chose this modeling approach for several reasons. Logistic regression is appropriate for binary outcome variables, making it ideal for analyzing injury severity. Bayesian methods allow us to incorporate prior knowledge and account for uncertainty, leading to more robust parameter estimates. While alternative modeling approaches, such as linear regression, were considered, Bayesian logistic regression was selected due to the binary nature of the outcome variable.
+The logistic link function (\(\text{logit}(\pi_i)\)) models the log-odds of violent crime as a linear combination of the predictors. The priors for the intercept (\(\alpha\)) and the coefficients (\(\beta_1\), \(\beta_2\)) follow a Normal distribution with mean \(0\) and standard deviation \(2.5\). These priors regularize the model, constraining the parameters to plausible values based on prior knowledge.
 
-The model was implemented using the `rstanarm` package [@citeRstanarm] in R [@citeR]. The posterior distributions of the parameters were estimated using Markov Chain Monte Carlo (MCMC) sampling. To optimize runtime, we randomly sampled 1000 observations from the dataset with a random seed of 215. Diagnostics, including convergence checks and posterior summaries, are available in the supplementary materials (see Appendix @sec-model-details).
+This Bayesian logistic regression model was implemented using the `rstanarm` package, leveraging Markov Chain Monte Carlo (MCMC) sampling for parameter estimation. Further diagnostics and posterior summaries are discussed in the supplementary materials (see Appendix @sec-model-details).
+
 
 ## Model Justification
 
-Each predictor in the model represents a specific condition under which a collision occurred, with hypothesized effects on injury severity. For driver condition, we expect that "Impaired" and "Distracted/Impaired" drivers are more likely to cause severe or fatal collisions due to reduced driving ability. Similarly, drivers under "Other" conditions may face various distractions or impairments, potentially increasing the severity of collisions. Conversely, drivers classified as "Normal" are anticipated to exhibit a reduced risk of severe outcomes.
+Each predictor in the model represents a specific characteristic of the crime and its context, with hypothesized effects on the likelihood of violent crime. For `PREMISES_TYPE`, it is expected that certain locations, such as "Transit" or "Outside," may have higher odds of violent crime due to increased public interactions or a lack of controlled environments. Conversely, premises like "Educational" or "House" are anticipated to have lower odds of violent crime, reflecting their relatively private or structured settings. Locations categorized as "Other" may include mixed contexts, resulting in varying effects.
 
-Regarding road surface condition, we hypothesize that hazardous surfaces, such as ice or snow, may reduce injury severity because drivers often reduce speed in these conditions. Wet surfaces, however, may slightly increase severity due to decreased traction, although this effect may be less pronounced than hazardous conditions.
+For `TIME_OF_DAY`, it is hypothesized that the "Evening" period may exhibit a higher likelihood of violent crimes, as this time is often associated with increased social activities and potential for interpersonal conflict. "Early Morning" may also show elevated odds due to decreased public surveillance and fewer witnesses. In contrast, "Morning" and "Afternoon" are expected to have lower odds, reflecting typical daytime routines with higher levels of oversight and structured activity.
 
-For light condition, we hypothesize that poor visibility under artificial or low lighting conditions may elevate injury severity, while natural light may reduce severity by improving visibility.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
+By incorporating these predictors into the Bayesian logistic regression model, this study seeks to identify and quantify the relationships between crime characteristics and the likelihood of violent outcomes, providing practical findings for targeted interventions.
 
 
 ```{r}
@@ -287,70 +310,62 @@ Our results are summarized in @tbl-modelresults.
 #| label: tbl-modelresults
 #| tbl-cap: "Explanatory model Injury Severity Prediction (n = 1000)"
 
-injury_severity_model <-
-  readRDS(file = here::here("models/injury_severity_model.rds"))
+violent_crime_model <-
+  readRDS(file = here::here("models/violent_crime_model.rds"))
 
 modelsummary(
   list(
-    "Injury Severity" = injury_severity_model
+    "Violent Crime" = violent_crime_model
   ),
   statistic = "mad"
   )
 
 ```
 
-### Results
+# Results {#sec-result}
 
-The results of the logistic regression model, as shown in Table 3, illustrate the relationships between injury severity in motor vehicle collisions and the predictor variables: driver condition, road surface condition, and light condition.
+Our results are summarized in @tbl-modelresults. The findings align with our expectations, providing insights into how premises type and time of day influence the likelihood of violent crimes. To avoid multicollinearity, the model excludes one level from each categorical predictor as the reference group: "Apartment" for `PREMISES_TYPE` and "Early Morning" for `TIME_OF_DAY`. The intercept represents the estimated log-odds of violent crime occurring when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of a violent crime occurring at an "Apartment" during "Early Morning" is 0.881.
 
-The **intercept** of the model is -0.820, which represents the baseline log-odds of a severe injury occurring when all other predictors are at their reference levels. The coefficients for each predictor indicate how the log-odds of a severe injury change with respect to the baseline.
+The type of premises strongly influences the likelihood of violent crimes. For instance, crimes occurring in "Transit" premises are far more likely to be violent compared to the reference group. The estimated coefficient for `PREMISES_TYPETransit` is 2.363, indicating a substantial increase in the log-odds of violent crime in this context. On the other hand, crimes occurring in "Commercial" and "Educational" premises are less likely to be violent, with coefficients of -0.925 and -0.957, respectively. Similarly, crimes at "House" premises exhibit the lowest likelihood of violence, as reflected by a coefficient of -1.519. These results highlight that location plays a important role in determining whether a crime is violent or non-violent.
 
-#### Driver Condition
+Time of day also significantly impacts the likelihood of violent crimes. Compared to the reference level of "Early Morning," the coefficients for `TIME_OF_DAYAfternoon` and `TIME_OF_DAYEvening` are 0.413 and 0.325, respectively, suggesting an elevated likelihood of violent crimes during these times. The "Morning" time of day exhibits a negligible increase in violent crime likelihood, as shown by a coefficient of 0.074.
 
-- **Impaired**: The coefficient for `DRIVCOND_GROUPImpaired` is 0.946 (SE = 0.306), suggesting that impaired driving significantly increases the likelihood of severe injuries in collisions compared to the baseline category (likely "Normal"). This positive coefficient indicates that impaired driving has a considerable association with severe outcomes.
-- **Normal**: The coefficient for `DRIVCOND_GROUPNormal` is -0.730 (SE = 0.207), suggesting a decreased likelihood of severe injury relative to other conditions.
-- **Other**: With a coefficient of 1.352 (SE = 0.169), "Other" driver conditions are also associated with a higher risk of severe injury, even more so than impaired driving.
+Figure 7 (see Section B.3) shows the range of coefficient estimates for our model within the 90% probability interval. However, because the credibility intervals for several predictors are relatively narrow, particularly for premises types like "Transit," it is challenging to observe the trends clearly. To address this, Figure 8 was created with the x-axis limited to a range of -5 to 5. Combining Figures 7 and 8, we observe statistical significance for several predictors, including "Transit," "Afternoon," and "Evening," as their credibility intervals do not cross zero.
 
-#### Road Surface Condition
+The coefficients are reported in log-odds, where a positive value indicates an increased likelihood of violent crime, and a negative value reflects a decreased likelihood. The results demonstrate clear statistical significance for important predictors such as "Transit," "Afternoon," and "Evening," emphasizing the importance of both location and time of day in shaping violent crime outcomes.
 
-- **Hazardous Surface**: The coefficient for `RDSFCOND_GROUPHazardous Surface` is -3.282 (SE = 0.489), indicating a significant decrease in the likelihood of severe injury compared to "Good Condition" surfaces. This result may suggest that drivers exercise more caution or reduce speed on hazardous surfaces, potentially mitigating the severity of collisions.
-- **Other**: The coefficient for `RDSFCOND_GROUPOther` is -2.864 (SE = 0.410), which also shows a reduction in the likelihood of severe injury under unspecified surface conditions.
-- **Wet**: The coefficient for `RDSFCOND_GROUPWet` is -2.898 (SE = 0.418), similarly indicating a reduced risk of severe injury on wet surfaces.
-
-#### Light Condition
-
-- **Natural Light**: The coefficient for `LIGHT_GROUPNatural Light` is -0.186 (SE = 0.081), suggesting a slight reduction in the likelihood of severe injury compared to artificial light, though this effect is smaller than for the road surface conditions.
-- **Other**: With a coefficient of -0.043 (SE = 0.098), the "Other" category for light conditions does not show a significant impact on injury severity, suggesting that lighting variations may have minimal influence on collision severity in this dataset.
-
-Overall, the model results provide insights into how different conditions are associated with the severity of injuries in motor vehicle collisions. Factors such as impaired driving and unspecified road conditions significantly increase the likelihood of severe outcomes, while hazardous and wet surfaces appear to be associated with a reduced risk of severe injuries, possibly due to changes in driver behavior under these conditions.
 
 # Discussion {#sec-discussion}
 
-## Relationship between Driver Condition and Injury Severity
+## Relationship between Premises Type and Violent Crime
 
-The analysis shows that driver condition plays a crucial role in determining the severity of injuries in motor vehicle collisions. Drivers categorized as "Impaired" or "Other" are associated with a significantly higher risk of severe injuries, supporting existing research on the dangers of impaired driving. Studies have shown that alcohol and drug impairment reduce reaction times and decision-making abilities, greatly increasing the likelihood of serious collisions [@NHTSA_2021]. In Toronto, where this data was collected, impaired driving remains one of the primary causes of road fatalities, underscoring the importance of targeted interventions to address this issue. Policies such as stricter DUI (Driving Under the Influence) regulations, public awareness campaigns, and enhanced enforcement could help mitigate the risks associated with impaired driving. Conversely, "Normal" driving conditions show a lower likelihood of severe injury, emphasizing the impact of driver attentiveness and sobriety on road safety.
+The analysis highlights that premises type significantly influences the likelihood of violent crimes. Crimes occurring in "Transit" locations are strongly associated with higher odds of being classified as violent compared to the reference group ("Apartment"). This finding aligns with expectations, as transit environments often involve high volumes of people and limited surveillance, which may increase the potential for interpersonal conflicts. Similarly, "Outside" locations exhibit a higher likelihood of violent crimes, likely due to their open and less controlled nature, which may facilitate confrontations or opportunistic violence. In contrast, premises such as "Commercial," "Educational," and "House" are associated with lower odds of violent crimes. These findings suggest that environments with greater structural or social control (e.g., schools, private residences) are less conducive to violent activities. These insights underscore the importance of targeted safety measures in high-risk locations, such as enhancing surveillance in transit areas or increasing community policing efforts in outdoor public spaces.
 
-## Relationship between Road Surface Condition and Injury Severity
+## Relationship between Time of Day and Violent Crime
 
-Road surface conditions also influence injury severity in collisions, although perhaps not in the ways one might expect. The results indicate that hazardous surfaces, like icy or snowy roads, are associated with a lower likelihood of severe injuries. This finding could be explained by the fact that drivers may adjust their behavior on hazardous surfaces by reducing speed or increasing caution. Research suggests that adverse road conditions encourage safer driving practices, which can counterintuitively reduce injury severity in the event of an accident [@RoadSafety]. On the other hand, wet surfaces still increase the likelihood of severe injuries compared to good conditions, likely due to reduced tire traction leading to loss of control. These insights suggest that public safety campaigns encouraging cautious driving during adverse weather conditions could be effective, alongside infrastructure improvements such as better drainage to reduce wet road hazards.
+Time of day also plays a important role in determining the likelihood of violent crimes. The model results indicate that "Afternoon" and "Evening" periods are associated with elevated odds of violent crimes compared to the reference period ("Early Morning"). This pattern likely reflects increased social interactions and activities during these times, which may lead to heightened opportunities for conflicts or criminal acts. In contrast, "Morning" hours exhibit a negligible increase in violent crime likelihood, possibly reflecting a time of day characterized by structured routines and reduced social friction. These findings highlight the need for time-sensitive interventions, such as increased police presence during evening hours or community-based programs to address the underlying causes of violent behavior during high-risk times.
 
-## Relationship between Light Condition and Injury Severity
+## Implications for Policy and Prevention
 
-The model results indicate that light conditions play a minor role in injury severity, with a slight reduction in risk associated with natural light. This finding aligns with existing research showing that visibility is generally better in natural light, allowing drivers to detect and respond to hazards more effectively. Artificial light and "Other" lighting conditions are associated with a marginal increase in injury severity, which may be attributed to reduced visibility in low-light conditions or under artificial lighting [@LightingSafety]. While the effect is smaller than for driver and road conditions, this finding highlights the importance of well-maintained and properly illuminated roadways, especially in high-traffic areas and intersections.
+The results provide practical findings for crime prevention and public safety policies. For example, transit and outdoor areas, identified as high-risk premises, could benefit from increased surveillance, improved lighting, and targeted community engagement programs. Similarly, allocating law enforcement resources more strategically to focus on evening and afternoon periods could help deter violent crimes during these high-risk times. The findings also support urban planning efforts that enhance safety features in public spaces, such as the installation of security cameras and the promotion of neighborhood watch programs. By addressing the specific premises and times associated with violent crimes, policymakers can implement evidence-based strategies to reduce violence and improve community safety.
 
 ## Limitations
 
-### Data Limitations Due to Geographic Offsetting
+### Data Constraints
 
-One limitation of this dataset is the geographic offsetting of incident locations to protect privacy. While necessary for privacy concerns, this adjustment may reduce the accuracy of analyses that focus on specific intersections or neighborhoods. For instance, analyses attempting to identify collision "hotspots" or evaluate the effectiveness of localized safety measures could be skewed. Future research may benefit from accessing more precise location data where privacy can still be safeguarded through other methods, such as anonymization.
+One limitation of this study is the exclusion of crimes that could not be definitively classified as violent or non-violent. While necessary to ensure data consistency, this filtering process may omit incidents that could provide additional context for understanding violent crime dynamics. Future research should explore ways to include these ambiguous cases to improve the comprehensiveness of the analysis.
 
-### Underrepresentation of Non-Severe Incidents
+### Focus on a Single City
 
-The dataset only includes collisions that resulted in severe injuries or fatalities, excluding minor incidents that also provide valuable insights into road safety. This focus on high-severity incidents may lead to an overrepresentation of conditions associated with severe outcomes, potentially skewing the findings. Incorporating data on less severe incidents would allow for a more comprehensive analysis of risk factors across all collision types, enhancing the ability to develop preventive measures that address both severe and minor incidents.
+The dataset is specific to crimes reported in Toronto, which limits the generalizability of the findings to other regions or cities. Crime dynamics can vary widely based on local socioeconomic, cultural, and environmental factors. Further studies should replicate this analysis in other urban areas to assess the extent to which these findings apply across different contexts.
+
+### Simplification of Time Categories
+
+Grouping time into four broad categories (Early Morning, Morning, Afternoon, and Evening) simplifies analysis but may obscure more granular patterns in violent crime occurrence. Future research could explore finer temporal granularity, such as analyzing crimes on an hourly basis, to capture additional nuances in time-of-day effects.
 
 ## Future Steps
 
-Further research should consider expanding the dataset to include a broader range of collision outcomes, capturing minor injuries and non-injury collisions. This would provide a more holistic view of road safety in Toronto, identifying conditions that contribute to all types of collisions. Additionally, exploring interactions between environmental and human factors—such as how road surface conditions might interact with driver behavior—could yield more nuanced insights. Policymakers and city planners could benefit from such research to implement multifaceted safety measures, ultimately creating a safer driving environment in Toronto.
+To enhance the utility and scope of this research, future studies should consider incorporating additional predictors, such as socioeconomic factors, neighborhood characteristics, or the presence of law enforcement resources. These variables could provide a more comprehensive understanding of the conditions contributing to violent crimes. Additionally, integrating spatial analysis with precise location data could identify specific hotspots for targeted interventions. Policymakers and city planners could leverage these insights to allocate resources more effectively, reduce violent crimes, and promote public safety in Toronto and beyond.
 
 \newpage
 
@@ -363,11 +378,11 @@ Further research should consider expanding the dataset to include a broader rang
 
 # Model details {#sec-model-details}
 
-## Posterior predictive check
+## Posterior Predictive Check and Prior-Posterior Comparison
 
-In @fig-post_dist we implement a posterior predictive check. This shows...
+The posterior predictive check in @fig-post_dist provides an evaluation of how well the Bayesian logistic regression model replicates the observed data. The posterior distribution (\(y_{\text{rep}}\)) closely aligns with the observed data (\(y\)), indicating that the model provides a good fit and captures the essential patterns in the data.
 
-In @fig-post_prior we compare the posterior with the prior. This shows... 
+In @fig-post_prior, the posterior distributions of the model parameters are compared against their priors. This visual comparison highlights how the observed data influenced the posterior estimates. For instance, predictors such as `PREMISES_TYPETransit` and `TIME_OF_DAYAfternoon` show a notable shift in their posterior distributions compared to the priors, reflecting strong evidence provided by the data. Conversely, predictors with minimal shifts suggest less data-driven evidence or smaller effects on the model outcome.
 
 ```{r}
 #| label: fig-post_dist
@@ -377,7 +392,7 @@ In @fig-post_prior we compare the posterior with the prior. This shows...
 #| message: false
 #| 
 
-pp_check(injury_severity_model) +
+pp_check(violent_crime_model) +
   theme(legend.position = "bottom")
 ```
 
@@ -395,26 +410,25 @@ library(here)
 library(arrow)
 
 #### Read cleaned data ####
-analysis_data <- read_parquet(here::here("data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet"))
+analysis_data <- read_parquet(here::here("data/02-analysis_data/cleaned_crime_data_for_model.parquet"))
 
-# Ensure that the grouped variables are being used
-analysis_data$DRIVCOND_GROUP <- factor(analysis_data$DRIVCOND_GROUP)
-analysis_data$LIGHT_GROUP <- factor(analysis_data$LIGHT_GROUP)
-analysis_data$RDSFCOND_GROUP <- factor(analysis_data$RDSFCOND_GROUP)
+# Ensure predictor variables are set as factors in the loaded data
+analysis_data$PREMISES_TYPE <- factor(analysis_data$PREMISES_TYPE)
+analysis_data$TIME_OF_DAY <- factor(analysis_data$TIME_OF_DAY)
 
-# Sample 1000 observations for consistent model comparison
+# Sample 1000 observations for consistent model comparison (optional step)
 set.seed(304)
-injury_data_reduced <- 
+crime_data_reduced <- 
   analysis_data |> 
   slice_sample(n = 1000)
 
-# Ensure the model is loaded (or re-fit if needed)
-if (!exists("injury_severity_model")) {
-  injury_severity_model <- readRDS(here::here("models/injury_severity_model.rds"))
+# Load or fit the model if not already available
+if (!exists("violent_crime_model")) {
+  violent_crime_model <- readRDS(here::here("models/violent_crime_model.rds"))
 }
 
 # Generate the Posterior vs. Prior plot
-posterior_vs_prior(injury_severity_model, size = 0.1) +
+posterior_vs_prior(violent_crime_model, size = 0.1) +
   theme_minimal() +
   theme(
     legend.position = "bottom",
@@ -427,48 +441,51 @@ posterior_vs_prior(injury_severity_model, size = 0.1) +
 ```
 
 
-## Diagnostics
+## Diagnostics {#sec-diagnostics}
 
-@fig-trace1 and @fig-trace2 are trace plots. It shows... This suggests...
+### Markov Chain Monte Carlo Convergence Check
 
-@fig-rhat is a Rhat plot. It shows... This suggests...
+To assess the convergence of the Markov Chain Monte Carlo (MCMC) sampling for the Bayesian logistic regression model, trace plots and Rhat plots were analyzed. These diagnostics are crucial to ensure that the chains mix well and converge to a stable distribution, providing reliable parameter estimates.
 
-## Markov Chain Monte Carlo Convergence Check
+#### Trace Plots
 
-# Trace plots and Rhat plots for the `injury_severity_model`
+@fig-trace-premise and @fig-trace-time display the trace plots for the model's intercept, premises type predictors, and time of day predictors. Each plot shows the sampled parameter values across iterations for all four chains.
+
+- **Premises Type Predictors**: As seen in @fig-trace-premise, the chains for predictors like `House`, `Commercial`, `Educational`, and `Outside` fluctuate around stable mean values, indicating good mixing and convergence.
+- **Time of Day Predictors**: @fig-trace-time illustrates the trace plots for `Morning`, `Afternoon`, and `Evening` time categories, along with `Transit Premises`. The chains for these predictors also show no significant trends or drift, confirming convergence.
+
 
 ```{r}
 #| echo: false
-#| eval: true
 #| message: false
 #| warning: false
-#| label: fig-trace1
-#| fig-cap: "Trace plot of intercept and driver condition"
-#| fig-subcap: ["Trace plot of Intercept", "Trace plot of DRIVCOND_GROUPImpaired", "Trace plot of DRIVCOND_GROUPNormal"]
+#| label: fig-trace-premise
+#| fig-cap: "Trace plots of intercept and premises type predictors"
+#| fig-subcap: ["Intercept", "House", "Commercial", "Educational", "Outside", "Other"]
 #| layout-ncol: 2
 
-# Trace plots for the intercept and selected levels of DRIVCOND_GROUP
-plot(injury_severity_model, "trace", "(Intercept)")
-plot(injury_severity_model, "trace", "DRIVCOND_GROUPImpaired")
-plot(injury_severity_model, "trace", "DRIVCOND_GROUPNormal")
-
+plot(violent_crime_model, "trace", "(Intercept)")
+plot(violent_crime_model, "trace", "PREMISES_TYPEHouse")
+plot(violent_crime_model, "trace", "PREMISES_TYPECommercial")
+plot(violent_crime_model, "trace", "PREMISES_TYPEEducational")
+plot(violent_crime_model, "trace", "PREMISES_TYPEOutside")
+plot(violent_crime_model, "trace", "PREMISES_TYPEOther")
 ```
 
 ```{r}
 #| echo: false
-#| eval: true
 #| message: false
 #| warning: false
-#| label: fig-trace2
-#| fig-cap: "Trace plot of road surface and light condition"
-#| fig-subcap: ["Trace plot of RDSFCOND_GROUPHazardous Surface", "Trace plot of RDSFCOND_GROUPWet", "Trace plot of LIGHT_GROUPNatural Light", "Trace plot of LIGHT_GROUPArtificial Light"]
+#| label: fig-trace-time
+#| fig-cap: "Trace plots of time of day predictors"
+#| fig-subcap: ["Transit Premises", "Morning", "Afternoon", "Evening"]
 #| layout-ncol: 2
 
-# Trace plots for selected levels of RDSFCOND_GROUP and LIGHT_GROUP
-plot(injury_severity_model, "trace", "RDSFCOND_GROUPHazardous Surface")
-plot(injury_severity_model, "trace", "RDSFCOND_GROUPWet")
-plot(injury_severity_model, "trace", "LIGHT_GROUPNatural Light")
 
+plot(violent_crime_model, "trace", "PREMISES_TYPETransit")
+plot(violent_crime_model, "trace", "TIME_OF_DAYMorning")
+plot(violent_crime_model, "trace", "TIME_OF_DAYAfternoon")
+plot(violent_crime_model, "trace", "TIME_OF_DAYEvening")
 ```
 
 ```{r}
@@ -480,13 +497,18 @@ plot(injury_severity_model, "trace", "LIGHT_GROUPNatural Light")
 #| fig-cap: "Rhat plot for MCMC convergence"
 
 # Rhat plot to check MCMC convergence
-plot(injury_severity_model, "rhat")
+plot(violent_crime_model, "rhat")
 
 ```
 
 ## 90% Credibility Interval {#sec-credibility-interval}
 
-@fig-modelresults1 and @fig-modelresults2 are 90% credibility interval plots for the injury severity predictors.
+Figures @fig-modelresults1 and @fig-modelresults2 visualize the 90% credible intervals for the predictors in the Bayesian logistic regression model. These plots provide insights into the uncertainty surrounding the estimated coefficients for each predictor.
+
+Figure @fig-modelresults1 displays the 90% credible intervals for all predictors without restrictions on the x-axis. This plot shows how the predictors such as `PREMISES_TYPE` and `TIME_OF_DAY` influence the likelihood of violent crimes. For example, `PREMISES_TYPETransit` has a high positive credible interval, indicating a significant increase in the likelihood of violent crime in transit areas. Conversely, `PREMISES_TYPECommercial` and `PREMISES_TYPEEducational` have negative credible intervals, indicating a lower likelihood of violent crimes in these premises types.
+
+In Figure @fig-modelresults2, the x-axis has been restricted to a range of -5 to 5 to better visualize predictors with smaller intervals. This refined view helps highlight subtle but meaningful differences between categories like `TIME_OF_DAYAfternoon` and `TIME_OF_DAYEvening`, which show a noticeable increase in the likelihood of violent crimes compared to the reference category (`TIME_OF_DAYEarly Morning`).
+
 
 ```{r}
 #| echo: false
@@ -494,9 +516,9 @@ plot(injury_severity_model, "rhat")
 #| warning: false
 #| message: false
 #| label: fig-modelresults1
-#| fig-cap: "Credible intervals for predictors of injury severity"
+#| fig-cap: "90% credible intervals for predictors of violent crime likelihood"
 
-modelplot(injury_severity_model, conf_level = 0.90, size = 0.2) +
+modelplot(violent_crime_model, conf_level = 0.90, size = 0.2) +
   labs(x = "90% credibility interval") +
   theme(axis.text.y = element_text(size = 6))
 ```
@@ -507,10 +529,10 @@ modelplot(injury_severity_model, conf_level = 0.90, size = 0.2) +
 #| warning: false
 #| message: false
 #| label: fig-modelresults2
-#| fig-cap: "Credible intervals for predictors of injury severity with x-axis limits"
+#| fig-cap: "90% credible intervals for predictors of violent crime likelihood with restricted x-axis limits"
 
 # Create the model plot
-model_plot <- modelplot(injury_severity_model, conf_level = 0.90, size = 0.2)
+model_plot <- modelplot(violent_crime_model, conf_level = 0.90, size = 0.2)
 
 # Modify the x-axis limits
 model_plot + xlim(-5, 5) +  # Adjust the limits as needed

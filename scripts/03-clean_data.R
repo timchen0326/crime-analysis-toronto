@@ -1,62 +1,77 @@
 #### Preamble ####
-# Purpose: Cleans the raw motor vehicle collision data for analysis
+# Purpose: Cleans the raw crime data for analysis with grouped variables
 # Author: [Your Name]
 # Date: [Today's Date]
 # Contact: [Your Email]
 # License: MIT
-# Pre-requisites: Downloaded raw data on motor vehicle collisions
+# Pre-requisites: Downloaded raw crime data
 # Any other information needed? Ensure dependencies are installed, and data file path is correct.
 
-#### Workspace setup ####
+#### Workspace Setup ####
 library(tidyverse)
 library(janitor)
 library(arrow)
+library(lubridate)  # For date operations
 
-#### Clean data ####
-raw_data <- read_csv("data/01-raw_data/Motor Vehicle Collisions with KSI Data - 4326.csv")
+#### Read Data ####
+# Replace the file path with the correct path to your data file
+raw_data <- read_csv("data/01-raw_data/major-crime-indicators.csv")
 
-# Initial data cleaning and transformation
-cleaned_data <- 
-  raw_data |> 
-  # Select relevant columns for your analysis
-  select(
-    ACCNUM, DATE, TIME, ROAD_CLASS, DISTRICT, TRAFFCTL, VISIBILITY, LIGHT, 
-    RDSFCOND, ACCLOC, ACCLASS, IMPACTYPE, INVTYPE, INVAGE, INJURY, DRIVCOND
-  ) |>
-  # Filter out rows with missing or irrelevant injury data
-  filter(!is.na(INJURY), !is.na(DRIVCOND), !is.na(LIGHT), !is.na(RDSFCOND)) |>
-  # Convert injury severity to binary variable
-  mutate(INJURY_SEVERE = if_else(INJURY == "Fatal", 1, 0)) |>
-  # Combine categories for `DRIVCOND`
+#### Define Violent and Non-Violent Offenses ####
+violent_offenses <- c(
+  "Assault", "Assault Bodily Harm", "Assault With Weapon", "Assault Peace Officer",
+  "Aggravated Assault", "Assault - Force/Thrt/Impede", "Assault - Resist/ Prevent Seiz",
+  "Assault Peace Officer Wpn/Cbh", "Aggravated Assault Avails Pros", "Aggravated Aslt Peace Officer",
+  "Unlawfully Causing Bodily Harm", "Crim Negligence Bodily Harm", "Administering Noxious Thing",
+  "Air Gun Or Pistol: Bodily Harm", "Traps Likely Cause Bodily Harm", "Set/Place Trap/Intend Death/Bh",
+  "Disarming Peace/Public Officer", "Hoax Terrorism Causing Bodily",
+  "Robbery - Mugging", "Robbery - Business", "Robbery With Weapon", "Robbery - Swarming",
+  "Robbery - Purse Snatch", "Robbery - Other", "Robbery - Financial Institute",
+  "Robbery - Armoured Car", "Robbery - Vehicle Jacking", "Robbery - Home Invasion",
+  "Robbery - Taxi", "Robbery - Delivery Person", "Robbery - Atm", "Robbery To Steal Firearm",
+  "Discharge Firearm With Intent", "Pointing A Firearm", "Discharge Firearm - Recklessly",
+  "Use Firearm / Immit Commit Off"
+)
+
+non_violent_offenses <- c(
+  "Theft Over", "Theft Of Motor Vehicle", "Theft From Motor Vehicle Over",
+  "Theft From Mail / Bag / Key", "Theft Over - Shoplifting", "Theft - Misapprop Funds Over",
+  "Theft Over - Distraction", "Theft Over - Bicycle", "Theft Of Utilities Over",
+  "B&E W'Intent", "B&E", "B&E Out", "B&E - To Steal Firearm", "B&E - M/Veh To Steal Firearm",
+  "Unlawfully In Dwelling-House"
+)
+
+#### Fix Columns and Filter Data ####
+cleaned_data <- raw_data %>%
+  # Ensure date columns are parsed correctly
   mutate(
-    DRIVCOND_GROUP = case_when(
-      DRIVCOND %in% c("Ability Impaired, Alcohol Over .08", "Had Been Drinking", "Ability Impaired, Drugs") ~ "Impaired",
-      DRIVCOND %in% c("Inattentive", "Fatigue", "Medical or Physical Disability") ~ "Distracted/Impaired",
-      DRIVCOND == "Normal" ~ "Normal",
-      TRUE ~ "Other"
+    REPORT_DATE = as_date(REPORT_DATE, format = "%Y-%m-%d"),
+    # Create binary outcome for violent crime
+    VIOLENT_CRIME = case_when(
+      OFFENCE %in% violent_offenses ~ 1,
+      OFFENCE %in% non_violent_offenses ~ 0,
+      TRUE ~ NA_real_  # Exclude offenses not in either list
     ),
-    # Combine categories for `RDSFCOND`
-    RDSFCOND_GROUP = case_when(
-      RDSFCOND == "None" ~ "Good Condition",
-      RDSFCOND %in% c("Ice", "Slush", "Packed Snow", "Loose Snow", "Loose Sand or Gravel") ~ "Hazardous Surface",
-      RDSFCOND == "Wet" ~ "Wet",
-      TRUE ~ "Other"
+    # Categorize OCC_HOUR into time of day
+    TIME_OF_DAY = factor(
+      case_when(
+        OCC_HOUR >= 0 & OCC_HOUR < 6 ~ "Early Morning",
+        OCC_HOUR >= 6 & OCC_HOUR < 12 ~ "Morning",
+        OCC_HOUR >= 12 & OCC_HOUR < 18 ~ "Afternoon",
+        OCC_HOUR >= 18 & OCC_HOUR <= 23 ~ "Evening"
+      ),
+      levels = c("Early Morning", "Morning", "Afternoon", "Evening")
     ),
-    # Combine categories for `LIGHT`
-    LIGHT_GROUP = case_when(
-      LIGHT %in% c("Daylight", "Dawn", "Dusk") ~ "Natural Light",
-      LIGHT %in% c("Dark, artificial", "Dawn, artificial", "Daylight, artificial", "Dusk, artificial") ~ "Artificial Light",
-      TRUE ~ "Other"
-    )
-  ) |>
-  # Convert combined group variables to factors
-  mutate(
-    DRIVCOND_GROUP = factor(DRIVCOND_GROUP),
-    RDSFCOND_GROUP = factor(RDSFCOND_GROUP),
-    LIGHT_GROUP = factor(LIGHT_GROUP)
-  ) |>
-  # Remove rows with missing or invalid data
-  drop_na()
+    # Remove whitespace from PREMISES_TYPE to avoid unexpected NA values
+    PREMISES_TYPE = str_trim(PREMISES_TYPE, side = "both")
+  ) %>%
+  # Filter for summer month (July in this example)
+  filter(month(REPORT_DATE) == 7) %>%
+  # Remove all rows with NA in any of the specified columns
+  drop_na(EVENT_UNIQUE_ID, PREMISES_TYPE, TIME_OF_DAY, VIOLENT_CRIME) %>%
+  # Select relevant columns
+  select(EVENT_UNIQUE_ID, PREMISES_TYPE, TIME_OF_DAY, VIOLENT_CRIME)
 
-#### Save cleaned data ####
-write_parquet(cleaned_data, sink = "data/02-analysis_data/cleaned_motor_vehicle_collisions.parquet")
+#### Save Cleaned Data ####
+# Save cleaned data for modeling
+write_parquet(cleaned_data, "data/02-analysis_data/cleaned_crime_data_for_model.parquet")
