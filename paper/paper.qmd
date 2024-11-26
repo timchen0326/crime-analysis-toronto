@@ -1,17 +1,19 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Examining the Influence of Premises Type and Time of Day on Violent Crime in Toronto"
+subtitle: "A Bayesian Approach to Analyzing Contextual and Temporal Factors in Urban Crime Dynamics"
 author: 
-  - First author
-  - Another author
+  - Tim Chen
 thanks: "Code and data are available at: [https://github.com/timchen0326/crime-analysis-toronto](https://github.com/timchen0326/crime-analysis-toronto)."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
-format: pdf
-number-sections: true
+abstract: "This paper analyzes the contextual and temporal factors influencing violent crimes in Toronto using data from the Major Crime Indicators dataset. A Bayesian logistic regression model reveals that violent crimes are more likely to occur in transit and outdoor locations compared to residential and educational premises. Crimes are also more likely to be violent during afternoon and evening hours than early mornings. These findings offer critical insights for urban safety planning and targeted crime prevention strategies."
+format: 
+  pdf:
+    number-sections: true
+    toc: true
 bibliography: references.bib
 ---
+
 
 ```{r}
 #| include: false
@@ -168,30 +170,13 @@ crime_data[1:5, 1:3] |>
 
 ```
 
-```{r}
-#| label: tbl-summary
-#| tbl-cap: "Summary statistics of the cleaned Crime dataset"
-#| message: false
-#| echo: false
-
-# Generate a summary and render it as a table
-capture.output(summary(crime_data)) |>
-  as.data.frame() |>
-  knitr::kable(col.names = c("Summary Statistics"))
-
-```
-
 ## Predictor variables
-
-## Predictor Variables
 
 @fig-premises-type illustrates the distribution of violent versus non-violent crimes across different premises types. The results show that the highest number of crimes, both violent and non-violent, occur in "Outside" locations, followed by "Apartment" premises. Notably, violent crimes significantly outnumber non-violent ones in "Outside" locations, while "Apartments" and "Houses" have a more balanced distribution between the two crime types. Premises categorized as "Educational," "Transit," and "Other" show relatively low numbers of both violent and non-violent crimes, with "Educational" premises having the fewest incidents overall.
 
 @fig-time-of-day highlights the distribution of violent versus non-violent crimes by the time of day. The data reveals that violent crimes are most common during the "Evening," followed by "Afternoon" and "Early Morning." In contrast, non-violent crimes are more evenly distributed throughout the day but still peak during the "Evening." These findings suggest that the time of day plays a important role in influencing the likelihood of violent crimes, with evenings being a particularly high-risk period.
 
 By examining these distributions, we gain insights into where and when violent crimes are most likely to occur. Understanding these patterns is essential for developing focused crime prevention strategies, such as increasing law enforcement presence in high-risk areas during evening hours or implementing community-based interventions in "Outside" locations.
-
-```{r}
 
 
 ```{r}
@@ -355,10 +340,6 @@ The results provide practical findings for crime prevention and public safety po
 
 One limitation of this study is the exclusion of crimes that could not be definitively classified as violent or non-violent. While necessary to ensure data consistency, this filtering process may omit incidents that could provide additional context for understanding violent crime dynamics. Future research should explore ways to include these ambiguous cases to improve the comprehensiveness of the analysis.
 
-### Focus on a Single City
-
-The dataset is specific to crimes reported in Toronto, which limits the generalizability of the findings to other regions or cities. Crime dynamics can vary widely based on local socioeconomic, cultural, and environmental factors. Further studies should replicate this analysis in other urban areas to assess the extent to which these findings apply across different contexts.
-
 ### Simplification of Time Categories
 
 Grouping time into four broad categories (Early Morning, Morning, Afternoon, and Evening) simplifies analysis but may obscure more granular patterns in violent crime occurrence. Future research could explore finer temporal granularity, such as analyzing crimes on an hourly basis, to capture additional nuances in time-of-day effects.
@@ -371,10 +352,197 @@ To enhance the utility and scope of this research, future studies should conside
 
 \appendix
 
-# Appendix {-}
+# Appendix: Survey Design to Investigate Factors Influencing Violent Crimes in Toronto
 
+## Introduction
 
-# Additional data details
+This survey is designed to gather detailed information from victims of violent crimes in Toronto during the month of July. The primary goal is to supplement existing police data to better understand the factors influencing the likelihood of violent crimes, with a focus on premises type and time of day. By collecting firsthand accounts from victims, the study aims to uncover additional insights that can inform effective crime prevention strategies and policies.
+
+## Objectives
+
+### Primary Objective
+
+To identify and analyze factors contributing to the occurrence of violent crimes in Toronto by gathering detailed victim accounts.
+
+### Secondary Objectives
+
+- Explore the relationship between victim characteristics and the likelihood of experiencing violent crime.
+- Assess environmental and situational factors not captured in police reports.
+- Evaluate victims' perceptions and experiences to inform supportive services.
+
+## Methodology
+
+### Study Design
+
+A cross-sectional survey will be conducted using a structured questionnaire administered to victims of violent crimes.
+
+### Target Population
+
+- Individuals aged 18 and above who were victims of reported violent crimes in Toronto during the month of July.
+
+### Sampling Frame
+
+Victims listed in the Toronto Police Service records for violent crimes occurring in July.
+
+### Sampling Method
+
+- **Census Approach**: Attempt to include all eligible victims.
+- **If Not Feasible**: Employ stratified random sampling based on crime type and location to ensure representativeness.
+
+### Inclusion Criteria
+
+- Victims of violent crimes (e.g., assault, robbery) reported in July.
+- Aged 18 years or older.
+- Able to provide informed consent.
+
+### Exclusion Criteria
+
+- Victims under the age of 18.
+- Incidents classified as unfounded or withdrawn.
+- Individuals unable or unwilling to consent.
+
+## Survey Instrument
+
+The questionnaire is divided into six sections:
+
+### Section 1: Demographics
+
+1. What is your age?
+2. What is your gender? (Male, Female, Non-binary, Prefer not to say)
+3. What is your ethnicity? (Open-ended)
+4. What is your highest level of education completed?
+5. What is your current occupation?
+
+### Section 2: Incident Details
+
+6. On what date did the incident occur?
+7. At what time did the incident occur? (Specify hour)
+8. Where did the incident occur? (Specific address or nearest intersection)
+9. What type of premises was it? (Apartment, House, Commercial, Outside, Transit, Educational, Other)
+10. What were you doing just before the incident? (Open-ended)
+11. Were you familiar with this area? (Yes/No)
+
+### Section 3: Circumstances of the Incident
+
+12. Was the perpetrator known to you? (Yes/No)  
+13. How many perpetrators were involved?  
+14. Can you describe the perpetrator(s)? (Open-ended)  
+15. Were any weapons used? (Yes/No)  
+   - If Yes: Please specify the type of weapon.  
+16. Do you know or suspect the motive behind the crime? (Open-ended)
+
+### Section 4: Perceptions and Feelings
+
+17. Prior to the incident, how safe did you feel in that area? (Likert scale 1-5)  
+18. Were you aware of any risks or previous incidents in the area? (Yes/No)  
+19. How did you feel during the incident? (Open-ended)  
+20. How have you felt since the incident? (Open-ended)  
+
+### Section 5: Reporting and Response
+
+21. How was the incident reported? (Self-reported, Witness reported, Other)  
+22. Approximately how long did it take for authorities to respond? (Specify in minutes)  
+23. How satisfied are you with the response from authorities? (Likert scale 1-5)  
+24. Have you received any support services since the incident? (Yes/No)  
+   - If Yes: Please specify.
+
+### Section 6: Additional Factors
+
+25. Had you consumed alcohol or drugs prior to the incident? (Yes/No)  
+26. Do you believe the perpetrator(s) had consumed alcohol or drugs? (Yes/No/Don't know)  
+27. What were the lighting conditions at the time? (Well-lit, Dimly lit, Dark)  
+28. What was the weather like at the time? (Clear, Rainy, Snowy, Other)  
+29. Were there any security measures present? (Cameras, Security personnel, None, Other)  
+30. Were there other people around at the time? (Yes/No)  
+   - If Yes: Approximately how many?  
+
+## Ethical Considerations
+
+### Informed Consent
+
+- Participants will receive detailed information about the study's purpose, procedures, risks, and benefits.
+- Consent forms will be signed prior to participation.
+- Participants can withdraw at any time without penalty.
+
+### Confidentiality
+
+- Personal identifiers will be removed or coded.
+- Data will be stored securely with access limited to authorized personnel.
+- Results will be reported in aggregate to prevent identification.
+
+### Protection of Participants
+
+- Interviews will be conducted sensitively to minimize distress.
+- Referral information for support services will be provided.
+- Participation is entirely voluntary.
+
+### Ethical Approval
+
+The study protocol will be reviewed and approved by an Institutional Review Board (IRB) or Research Ethics Board (REB) prior to commencement.
+
+## Data Collection Procedures
+
+### Mode of Data Collection
+
+- **Primary Method**: Telephone interviews conducted by trained researchers.
+- **Alternative Methods**: In-person interviews or online questionnaires, depending on participant preference.
+
+### Interviewer Training
+
+- Training on trauma-informed interviewing techniques.
+- Guidelines on handling disclosures and providing support information.
+
+### Timeline
+
+Data collection will occur within two months following the incidents to ensure accurate recall.
+
+### Contact Protocol
+
+- Initial contact will be made via mail or email explaining the study and requesting participation.
+- Follow-up contact will be made to schedule interviews.
+
+## Data Management and Analysis
+
+### Data Entry and Storage
+
+- Data will be entered into a secure, password-protected database.
+- Regular backups will be performed.
+- Data will be encrypted to protect confidentiality.
+
+### Data Cleaning
+
+- Verification of data entry accuracy.
+- Handling of missing data according to predefined protocols.
+
+### Analysis Plan
+
+- **Descriptive Statistics**: Frequencies, means, and standard deviations for all variables.
+- **Inferential Statistics**: Logistic regression to identify factors associated with violent crime likelihood.
+- **Software**: Statistical analysis will be conducted using R or SPSS.
+
+## Quality Assurance
+
+### Pilot Testing
+
+- The survey will be pilot tested with a small group to identify issues with question clarity or sensitivity.
+- Revisions will be made based on feedback.
+
+### Data Monitoring
+
+- Regular checks for data completeness and consistency.
+- Interim analyses to identify any emerging issues.
+
+## Dissemination of Results
+
+- Findings will be compiled into a comprehensive report.
+- Academic papers will be prepared for publication in peer-reviewed journals.
+- Results will be shared with the Toronto Police Service, policymakers, and community organizations.
+- Presentations will be made at relevant conferences and meetings.
+
+## Conclusion
+
+This survey aims to enhance understanding of violent crimes in Toronto by incorporating victim perspectives and experiences. The comprehensive data collected will contribute to more effective prevention strategies and support services, ultimately aiming to reduce the incidence of violent crimes and improve community safety.
+
 
 # Model details {#sec-model-details}
 

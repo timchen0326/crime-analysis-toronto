@@ -1,52 +1,51 @@
 #### Preamble ####
-# Purpose: Simulates a dataset of Australian electoral divisions, including the 
-  #state and party that won each division.
-# Author: Rohan Alexander
-# Date: 26 September 2024
-# Contact: rohan.alexander@utoronto.ca
+# Purpose: Simulate a dataset of crime incidents in Toronto, including 
+# premises type, time of day, and crime type.
+# Author: Tim Chen
+# Date: Today
 # License: MIT
-# Pre-requisites: The `tidyverse` package must be installed
-# Any other information needed? Make sure you are in the `starter_folder` rproj
-
+# Pre-requisites: The `tidyverse` package must be installed.
 
 #### Workspace setup ####
 library(tidyverse)
-set.seed(853)
-
+set.seed(304)
 
 #### Simulate data ####
-# State names
-states <- c(
-  "New South Wales",
-  "Victoria",
-  "Queensland",
-  "South Australia",
-  "Western Australia",
-  "Tasmania",
-  "Northern Territory",
-  "Australian Capital Territory"
-)
+# Premises types and their probabilities
+premises_types <- c("Apartment", "House", "Commercial", 
+                    "Outside", "Educational", "Transit", "Other")
+premises_probs <- c(0.3, 0.25, 0.15, 0.1, 0.1, 0.05, 0.05)
 
-# Political parties
-parties <- c("Labor", "Liberal", "Greens", "National", "Other")
+# Times of day and their probabilities
+times_of_day <- c("Early Morning", "Morning", "Afternoon", "Evening")
+time_probs <- c(0.2, 0.25, 0.3, 0.25)
 
-# Create a dataset by randomly assigning states and parties to divisions
-analysis_data <- tibble(
-  division = paste("Division", 1:151),  # Add "Division" to make it a character
-  state = sample(
-    states,
+# Crime types and their probabilities
+crime_types <- c("Violent", "Non-Violent")
+crime_probs <- c(0.4, 0.6)
+
+# Create a dataset by randomly assigning premises, time, and crime type to incidents
+crime_data <- tibble(
+  incident_id = paste("Incident", 1:151),  # Add "Incident" to make it a character
+  premises_type = sample(
+    premises_types,
     size = 151,
     replace = TRUE,
-    prob = c(0.25, 0.25, 0.15, 0.1, 0.1, 0.1, 0.025, 0.025) # Rough state population distribution
+    prob = premises_probs
   ),
-  party = sample(
-    parties,
+  time_of_day = sample(
+    times_of_day,
     size = 151,
     replace = TRUE,
-    prob = c(0.40, 0.40, 0.05, 0.1, 0.05) # Rough party distribution
+    prob = time_probs
+  ),
+  crime_type = sample(
+    crime_types,
+    size = 151,
+    replace = TRUE,
+    prob = crime_probs
   )
 )
 
-
 #### Save data ####
-write_csv(analysis_data, "data/00-simulated_data/simulated_data.csv")
+write_csv(crime_data, "data/00-simulated_data/simulated_crime_data.csv")

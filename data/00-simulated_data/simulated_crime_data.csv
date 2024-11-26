@@ -1,0 +1,152 @@
+incident_id,premises_type,time_of_day,crime_type
+Incident 1,Transit,Afternoon,Violent
+Incident 2,Commercial,Afternoon,Violent
+Incident 3,Apartment,Early Morning,Violent
+Incident 4,House,Morning,Violent
+Incident 5,Transit,Morning,Non-Violent
+Incident 6,Apartment,Early Morning,Non-Violent
+Incident 7,Other,Evening,Non-Violent
+Incident 8,Educational,Early Morning,Violent
+Incident 9,Apartment,Evening,Non-Violent
+Incident 10,House,Early Morning,Non-Violent
+Incident 11,House,Evening,Non-Violent
+Incident 12,Outside,Evening,Non-Violent
+Incident 13,Other,Afternoon,Non-Violent
+Incident 14,Apartment,Early Morning,Non-Violent
+Incident 15,Other,Evening,Violent
+Incident 16,Apartment,Afternoon,Non-Violent
+Incident 17,Apartment,Afternoon,Non-Violent
+Incident 18,Apartment,Afternoon,Violent
+Incident 19,Educational,Early Morning,Non-Violent
+Incident 20,Commercial,Evening,Non-Violent
+Incident 21,Apartment,Afternoon,Non-Violent
+Incident 22,Apartment,Afternoon,Non-Violent
+Incident 23,Apartment,Afternoon,Violent
+Incident 24,House,Evening,Non-Violent
+Incident 25,Outside,Evening,Non-Violent
+Incident 26,House,Early Morning,Violent
+Incident 27,Apartment,Afternoon,Violent
+Incident 28,Outside,Morning,Non-Violent
+Incident 29,Apartment,Afternoon,Violent
+Incident 30,House,Afternoon,Violent
+Incident 31,Commercial,Afternoon,Violent
+Incident 32,Commercial,Early Morning,Violent
+Incident 33,Other,Morning,Non-Violent
+Incident 34,Commercial,Morning,Violent
+Incident 35,Other,Evening,Violent
+Incident 36,Outside,Morning,Non-Violent
+Incident 37,Apartment,Early Morning,Non-Violent
+Incident 38,House,Morning,Violent
+Incident 39,Apartment,Morning,Violent
+Incident 40,Apartment,Evening,Violent
+Incident 41,Apartment,Afternoon,Violent
+Incident 42,House,Evening,Violent
+Incident 43,Apartment,Early Morning,Non-Violent
+Incident 44,House,Evening,Non-Violent
+Incident 45,Other,Afternoon,Violent
+Incident 46,House,Early Morning,Non-Violent
+Incident 47,House,Afternoon,Violent
+Incident 48,Commercial,Afternoon,Non-Violent
+Incident 49,Commercial,Evening,Violent
+Incident 50,Apartment,Afternoon,Violent
+Incident 51,Commercial,Evening,Violent
+Incident 52,Commercial,Afternoon,Violent
+Incident 53,Commercial,Morning,Non-Violent
+Incident 54,House,Morning,Non-Violent
+Incident 55,Apartment,Evening,Non-Violent
+Incident 56,Apartment,Evening,Violent
+Incident 57,House,Evening,Non-Violent
+Incident 58,Outside,Early Morning,Violent
+Incident 59,Transit,Early Morning,Non-Violent
+Incident 60,Commercial,Afternoon,Non-Violent
+Incident 61,Apartment,Evening,Violent
+Incident 62,House,Afternoon,Non-Violent
+Incident 63,Outside,Afternoon,Violent
+Incident 64,House,Evening,Non-Violent
+Incident 65,Transit,Early Morning,Non-Violent
+Incident 66,Commercial,Morning,Violent
+Incident 67,House,Evening,Non-Violent
+Incident 68,Outside,Afternoon,Non-Violent
+Incident 69,House,Morning,Non-Violent
+Incident 70,House,Evening,Violent
+Incident 71,Outside,Evening,Violent
+Incident 72,Apartment,Afternoon,Violent
+Incident 73,Outside,Afternoon,Non-Violent
+Incident 74,Commercial,Early Morning,Non-Violent
+Incident 75,Transit,Early Morning,Non-Violent
+Incident 76,Commercial,Afternoon,Non-Violent
+Incident 77,Educational,Early Morning,Non-Violent
+Incident 78,Outside,Evening,Violent
+Incident 79,House,Early Morning,Non-Violent
+Incident 80,Transit,Early Morning,Violent
+Incident 81,House,Afternoon,Non-Violent
+Incident 82,Commercial,Afternoon,Non-Violent
+Incident 83,Apartment,Evening,Non-Violent
+Incident 84,Apartment,Early Morning,Violent
+Incident 85,House,Afternoon,Non-Violent
+Incident 86,Commercial,Morning,Non-Violent
+Incident 87,Outside,Evening,Violent
+Incident 88,House,Evening,Violent
+Incident 89,House,Early Morning,Non-Violent
+Incident 90,House,Early Morning,Non-Violent
+Incident 91,Apartment,Morning,Violent
+Incident 92,Apartment,Morning,Non-Violent
+Incident 93,House,Early Morning,Non-Violent
+Incident 94,Apartment,Evening,Non-Violent
+Incident 95,House,Evening,Non-Violent
+Incident 96,House,Evening,Non-Violent
+Incident 97,Other,Morning,Violent
+Incident 98,Apartment,Evening,Non-Violent
+Incident 99,Commercial,Morning,Violent
+Incident 100,Apartment,Afternoon,Non-Violent
+Incident 101,Apartment,Evening,Violent
+Incident 102,House,Morning,Violent
+Incident 103,Apartment,Afternoon,Non-Violent
+Incident 104,House,Afternoon,Non-Violent
+Incident 105,Commercial,Morning,Non-Violent
+Incident 106,Other,Afternoon,Violent
+Incident 107,Apartment,Evening,Violent
+Incident 108,House,Morning,Non-Violent
+Incident 109,Commercial,Evening,Violent
+Incident 110,Apartment,Morning,Violent
+Incident 111,Apartment,Early Morning,Violent
+Incident 112,House,Morning,Non-Violent
+Incident 113,Apartment,Afternoon,Non-Violent
+Incident 114,House,Evening,Violent
+Incident 115,Transit,Evening,Non-Violent
+Incident 116,Apartment,Evening,Non-Violent
+Incident 117,Apartment,Afternoon,Non-Violent
+Incident 118,Educational,Afternoon,Violent
+Incident 119,Transit,Early Morning,Non-Violent
+Incident 120,Educational,Early Morning,Non-Violent
+Incident 121,House,Evening,Non-Violent
+Incident 122,House,Afternoon,Non-Violent
+Incident 123,Outside,Morning,Violent
+Incident 124,House,Afternoon,Violent
+Incident 125,Apartment,Morning,Non-Violent
+Incident 126,Commercial,Early Morning,Non-Violent
+Incident 127,Apartment,Evening,Non-Violent
+Incident 128,Outside,Early Morning,Non-Violent
+Incident 129,House,Evening,Non-Violent
+Incident 130,Apartment,Morning,Non-Violent
+Incident 131,Commercial,Afternoon,Non-Violent
+Incident 132,Apartment,Evening,Non-Violent
+Incident 133,House,Morning,Non-Violent
+Incident 134,Educational,Evening,Non-Violent
+Incident 135,House,Afternoon,Non-Violent
+Incident 136,House,Morning,Violent
+Incident 137,Other,Early Morning,Non-Violent
+Incident 138,Apartment,Afternoon,Non-Violent
+Incident 139,Apartment,Morning,Violent
+Incident 140,Apartment,Afternoon,Non-Violent
+Incident 141,Commercial,Morning,Non-Violent
+Incident 142,House,Afternoon,Non-Violent
+Incident 143,Apartment,Morning,Violent
+Incident 144,House,Afternoon,Non-Violent
+Incident 145,Apartment,Morning,Non-Violent
+Incident 146,Apartment,Morning,Non-Violent
+Incident 147,House,Morning,Violent
+Incident 148,Commercial,Morning,Non-Violent
+Incident 149,Commercial,Afternoon,Non-Violent
+Incident 150,House,Early Morning,Non-Violent
+Incident 151,House,Morning,Non-Violent

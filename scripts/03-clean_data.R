@@ -1,11 +1,12 @@
 #### Preamble ####
 # Purpose: Cleans the raw crime data for analysis with grouped variables
-# Author: [Your Name]
-# Date: [Today's Date]
-# Contact: [Your Email]
+# Author: Tim Chen
+# Date: Today
+# Contact: timwt.chen@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: Downloaded raw crime data
-# Any other information needed? Ensure dependencies are installed, and data file path is correct.
+# Any other information needed? Ensure dependencies are installed, and the data file path is correct.
+
 
 #### Workspace Setup ####
 library(tidyverse)

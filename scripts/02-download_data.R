@@ -1,63 +1,37 @@
 #### Preamble ####
-# Purpose: Extract unique values for each model variable from raw data
-# Author: [Your Name]
-# Date: [Today's Date]
-# Contact: [Your Email]
+# Purpose: Download and save raw data for Major Crime Indicators in Toronto
+# Author: Tim Chen
+# Date: Today
+# Contact: timwt.chen@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Raw dataset available in CSV format
-# Any other information needed? Ensure the data file path is correct.
+# Pre-requisites: 
+# - The `opendatatoronto`, `dplyr`, `readr`, and `here` packages must be installed and loaded.
+# - Ensure you are in the correct working directory to save the data.
+# - The dataset "Major Crime Indicators" must be available on Open Data Toronto.
 
 #### Workspace setup ####
-library(tidyverse)
+library(opendatatoronto)
+library(dplyr)
+library(readr) # For writing data to CSV files
+library(here)  # For handling file paths
 
-#### Read raw data ####
-# Replace the file path with your actual data file location
-raw_data <- read_csv("data/01-raw_data/major-crime-indicators.csv")
+# Create directories if not already present
+dir.create(here::here("data"), showWarnings = FALSE)
+dir.create(here::here("data/01-raw_data"), showWarnings = FALSE)
 
-#### Extract unique values for each model variable ####
+# Get package information
+package <- show_package("major-crime-indicators")
+print(package)
 
-# Unique values for OFFENCE
-unique_offense <- raw_data %>%
-  select(OFFENCE) %>%
-  distinct() %>%
-  pull(OFFENCE)
+# Get all resources for this package
+resources <- list_package_resources("major-crime-indicators")
 
-# Unique values for OCC_HOUR
-unique_occ_hour <- raw_data %>%
-  select(OCC_HOUR) %>%
-  distinct() %>%
-  pull(OCC_HOUR)
+# Identify datastore resources
+datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
 
-# Unique values for DIVISION
-unique_division <- raw_data %>%
-  select(DIVISION) %>%
-  distinct() %>%
-  pull(DIVISION)
+# Load the first datastore resource as a sample
+data <- filter(datastore_resources, row_number() == 1) %>% get_resource()
 
-# Unique values for LOCATION_TYPE
-unique_location_type <- raw_data %>%
-  select(LOCATION_TYPE) %>%
-  distinct() %>%
-  pull(LOCATION_TYPE)
-
-# Unique values for PREMISES_TYPE
-unique_premises_type <- raw_data %>%
-  select(PREMISES_TYPE) %>%
-  distinct() %>%
-  pull(PREMISES_TYPE)
-
-# Print the unique values
-cat("Unique values for OFFENCE:\n")
-print(unique_offense)
-
-cat("\nUnique values for OCC_HOUR:\n")
-print(unique_occ_hour)
-
-cat("\nUnique values for DIVISION:\n")
-print(unique_division)
-
-cat("\nUnique values for LOCATION_TYPE:\n")
-print(unique_location_type)
-
-cat("\nUnique values for PREMISES_TYPE:\n")
-print(unique_premises_type)
+# Save the raw data to data/01-raw_data directory
+output_path <- here::here("data/01-raw_data/major-crime-indicators.csv")
+write_csv(data, output_path)

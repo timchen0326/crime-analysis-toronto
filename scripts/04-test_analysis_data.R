@@ -1,69 +1,62 @@
 #### Preamble ####
-# Purpose: Tests... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 26 September 2024 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Tests the structure and validity of the cleaned crime dataset
+# Author: Tim Chen
+# Date: Today
+# Contact: timwt.chen@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
-
+# Pre-requisites: The cleaned crime data must be saved as a Parquet file
+# Any other information needed? Ensure the dataset path is correct.
 
 #### Workspace setup ####
 library(tidyverse)
+library(arrow)  # For reading Parquet files
 library(testthat)
 
-data <- read_csv("data/02-analysis_data/analysis_data.csv")
-
+# Read the cleaned dataset from a Parquet file
+data <- read_parquet("data/02-analysis_data/cleaned_crime_data_for_model.parquet")
 
 #### Test data ####
-# Test that the dataset has 151 rows - there are 151 divisions in Australia
-test_that("dataset has 151 rows", {
-  expect_equal(nrow(analysis_data), 151)
+
+# Test that the dataset has rows greater than 0
+test_that("dataset has rows", {
+  expect_gt(nrow(data), 0)
 })
 
-# Test that the dataset has 3 columns
-test_that("dataset has 3 columns", {
-  expect_equal(ncol(analysis_data), 3)
+# Test that the dataset has the expected columns
+expected_columns <- c("PREMISES_TYPE", "TIME_OF_DAY", "VIOLENT_CRIME", "EVENT_UNIQUE_ID")
+test_that("dataset has expected columns", {
+  expect_true(all(expected_columns %in% colnames(data)))
 })
 
-# Test that the 'division' column is character type
-test_that("'division' is character", {
-  expect_type(analysis_data$division, "character")
+# Test that the 'PREMISES_TYPE' column contains only valid values
+valid_premises <- c("Apartment", "House", "Commercial", "Outside", "Educational", "Transit", "Other")
+test_that("'PREMISES_TYPE' contains valid values", {
+  expect_true(all(data$PREMISES_TYPE %in% valid_premises))
 })
 
-# Test that the 'party' column is character type
-test_that("'party' is character", {
-  expect_type(analysis_data$party, "character")
+# Test that the 'TIME_OF_DAY' column contains only valid values
+valid_times <- c("Early Morning", "Morning", "Afternoon", "Evening")
+test_that("'TIME_OF_DAY' contains valid values", {
+  expect_true(all(data$TIME_OF_DAY %in% valid_times))
 })
 
-# Test that the 'state' column is character type
-test_that("'state' is character", {
-  expect_type(analysis_data$state, "character")
+# Test that the 'VIOLENT_CRIME' column contains only valid binary values (0 or 1)
+valid_crime_values <- c(0, 1)
+test_that("'VIOLENT_CRIME' contains valid binary values", {
+  expect_true(all(data$VIOLENT_CRIME %in% valid_crime_values))
+})
+
+# Test that 'PREMISES_TYPE' column does not have empty strings
+test_that("'PREMISES_TYPE' does not contain empty strings", {
+  expect_false(any(data$PREMISES_TYPE == ""))
+})
+
+# Test that 'TIME_OF_DAY' column does not have empty strings
+test_that("'TIME_OF_DAY' does not contain empty strings", {
+  expect_false(any(data$TIME_OF_DAY == ""))
 })
 
 # Test that there are no missing values in the dataset
 test_that("no missing values in dataset", {
-  expect_true(all(!is.na(analysis_data)))
-})
-
-# Test that 'division' contains unique values (no duplicates)
-test_that("'division' column contains unique values", {
-  expect_equal(length(unique(analysis_data$division)), 151)
-})
-
-# Test that 'state' contains only valid Australian state or territory names
-valid_states <- c("New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia", 
-                  "Tasmania", "Northern Territory", "Australian Capital Territory")
-test_that("'state' contains valid Australian state names", {
-  expect_true(all(analysis_data$state %in% valid_states))
-})
-
-# Test that there are no empty strings in 'division', 'party', or 'state' columns
-test_that("no empty strings in 'division', 'party', or 'state' columns", {
-  expect_false(any(analysis_data$division == "" | analysis_data$party == "" | analysis_data$state == ""))
-})
-
-# Test that the 'party' column contains at least 2 unique values
-test_that("'party' column contains at least 2 unique values", {
-  expect_true(length(unique(analysis_data$party)) >= 2)
+  expect_false(any(is.na(data)))
 })
