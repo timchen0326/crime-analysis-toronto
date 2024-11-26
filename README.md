@@ -19,7 +19,7 @@ The repository is structured as follows:
   - `llm_usage/usage.txt`: Log of interactions with LLMs for code and text generation.
   - `sketches`: Includes visual sketches and preliminary visualizations, such as:
     - `dataset.png`: Overview of the dataset.
-    - `graph1.png`, `graph2.png`: Graphical summaries or visualizations of key findings.
+    - `graph1.png`, `graph2.png`: Graphical visualizations of key variables.
 - `paper`: Contains files used to generate the final paper.
   - `paper.qmd`: Quarto markdown file used to write and compile the paper.
   - `references.bib`: Bibliography file with references used in the paper.
