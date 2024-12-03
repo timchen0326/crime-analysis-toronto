@@ -2,6 +2,7 @@
 # Purpose: Simulate a dataset of crime incidents in Toronto, including 
 # premises type, time of day, and crime type.
 # Author: Tim Chen
+# Contact: timwt.chen@mail.utoronto.ca
 # Date: Today
 # License: MIT
 # Pre-requisites: The `tidyverse` package must be installed.

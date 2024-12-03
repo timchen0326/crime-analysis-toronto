@@ -6,11 +6,12 @@ author:
 thanks: "Code and data are available at: [https://github.com/timchen0326/crime-analysis-toronto](https://github.com/timchen0326/crime-analysis-toronto)."
 date: today
 date-format: long
-abstract: "This paper analyzes the contextual and temporal factors influencing violent crimes in Toronto using data from the Major Crime Indicators dataset. A Bayesian logistic regression model reveals that violent crimes are more likely to occur in transit and outdoor locations compared to residential and educational premises. Crimes are also more likely to be violent during afternoon and evening hours than early mornings. These findings offer critical insights for urban safety planning and targeted crime prevention strategies."
+abstract: "This paper analyzes the contextual and temporal factors influencing violent crimes in Toronto using data from the Major Crime Indicators dataset. A Bayesian logistic regression model explains that violent crimes are more likely to occur in transit and outdoor locations compared to residential and educational premises. Crimes are also more likely to be violent during afternoon and evening hours than early mornings. These findings support urban safety planning and targeted crime prevention strategies."
 format: 
   pdf:
     number-sections: true
     toc: true
+    toc-depth: 2
 bibliography: references.bib
 ---
 
@@ -32,6 +33,7 @@ library(plotly)
 library(tibble)
 library(margins)
 library(kableExtra)
+library(patchwork)
 ```
 
 
@@ -66,13 +68,18 @@ The remainder of this paper is structured as follows. In @sec-data, we present a
 
 ## Overview
 
-We use the statistical programming language R [@citeR] to process, clean, and analyze the dataset for this study. Our data is sourced from the Open Data Toronto portal [@OpenDataToronto], specifically from the "Motor Vehicle Collisions Involving Killed or Seriously Injured Persons" dataset, which captures detailed information on traffic incidents in Toronto where individuals were either killed or seriously injured. This dataset, compiled by the Toronto Police Service, includes variables that record the time, location, environmental conditions, and specific parties involved in each collision, showing factors that may increase the risk of severe outcomes.
+We use the statistical programming language R [@citeR] to process, clean, and analyze the dataset for this study. Key R packages employed include `tidyverse` for data manipulation and visualization [@thereferencecanbewhatever], `arrow` for efficient data storage and retrieval [@arrowR], `here` for managing file paths [@here], `rstanarm` for Bayesian modeling [@rstanarm], `kableExtra` for enhanced table formatting [@kableExtra], `janitor` for cleaning messy data [@janitor], `lubridate` for working with dates and times [@lubridate], `marginaleffects` for calculating marginal effects [@marginaleffects], `plumber` for creating REST APIs [@plumber], `testthat` for unit testing [@testthat], and `opendatatoronto` for accessing Toronto’s open data [@opendatatoronto].
 
-The detailed information within the dataset enables a rigorous analysis of patterns in collision severity. By examining factors such as driver condition, road surface, and lighting conditions, we aim to identify high-risk scenarios that may require targeted safety interventions. Following principles outlined in "Telling Stories with Data" [@tellingstories], this study prioritizes transparency and reproducibility in presenting data-driven findings that can inform road safety policies.
+Our data is sourced from the Open Data Toronto portal [@OpenDataToronto], specifically from the "Motor Vehicle Collisions Involving Killed or Seriously Injured Persons" dataset, which captures detailed information on traffic incidents in Toronto where individuals were either killed or seriously injured. This dataset, compiled by the Toronto Police Service, includes variables that record the time, location, environmental conditions, and specific parties involved in each collision, showing factors that may increase the risk of severe outcomes.
+
+The detailed information within the dataset enables a rigorous analysis of patterns in collision severity. By examining factors such as driver condition, road surface, and lighting conditions, we aim to identify high-risk scenarios that may require targeted safety interventions. Following principles outlined in "Telling Stories with Data" [@tellingstories], this study prioritizes transparency and reproducibility in presenting findings that can inform road safety policies.
+
 
 ## Measurement
 
 The dataset used in this study is sourced from the Toronto Police Service and includes records of Major Crime Indicators (MCI) occurrences. These records capture information on five important categories of crime: Assault, Break and Enter, Auto Theft, Robbery, and Theft Over. Unlike some crime datasets, this dataset excludes occurrences classified as "unfounded," meaning that only verified incidents are included. The definition of "unfounded," provided by Statistics Canada, is: “It has been determined through police investigation that the offence reported did not occur, nor was it attempted.”
+
+To align with the study’s focus on temporal and environmental factors influencing violent crime, we selected crimes reported during the month of July. This decision was informed by research highlighting July as a high-risk period for violent crimes due to its status as one of the warmest months globally and its alignment with peak social activity [@JulyTemperatureRecords; @SeasonalityOfCrime]. Higher temperatures during July have been linked to increased aggression and lowered inhibition, a phenomenon described by the "Temperature/Aggression" theory [@SeasonalityOfCrime]. Moreover, the Routine Activities theory explains that greater public activity in July provides more opportunities for interaction between offenders and victims, potentially elevating crime rates [@SeasonalityOfCrime].
 
 The data collection process primarily relies on police-reported incidents. However, there are certain limitations in the completeness of the dataset. For example, some location coordinates are missing or left blank when the location could not be verified. Additionally, the dataset includes occurrences that are located outside the City of Toronto, which may slightly affect the analysis for Toronto-specific crime trends. 
 
@@ -85,7 +92,7 @@ Although the data provides a robust framework for understanding crime patterns i
 
 ## Data Cleaning
 
-The raw crime data underwent a comprehensive cleaning process to prepare it for analysis, ensuring the dataset was both relevant and consistent for the study's objectives. Initially, only key columns were selected from the raw dataset, including `EVENT_UNIQUE_ID` (Unique Identifier), `REPORT_DATE` (Date of Report), `OCC_HOUR` (Hour of Occurrence), `PREMISES_TYPE` (Type of Premises), and `OFFENCE` (Offense Type). This selection ensured that only the most pertinent information was included for examining factors associated with violent crimes.
+The raw crime data underwent a cleaning process to prepare it for analysis, ensuring the dataset was both relevant and consistent for the study's objectives. Initially, only key columns were selected from the raw dataset, including `EVENT_UNIQUE_ID` (Unique Identifier), `REPORT_DATE` (Date of Report), `OCC_HOUR` (Hour of Occurrence), `PREMISES_TYPE` (Type of Premises), and `OFFENCE` (Offense Type). This selection ensured that only the most pertinent information was included for examining factors associated with violent crimes.
 
 Rows with missing or irrelevant data in important columns, such as `EVENT_UNIQUE_ID`, `PREMISES_TYPE`, `TIME_OF_DAY`, and `VIOLENT_CRIME`, were removed to maintain data integrity and focus on valid observations. Offenses were categorized as either violent or non-violent to create a binary outcome variable (`VIOLENT_CRIME`), where offenses such as "Assault" and "Robbery" were classified as violent (`1`), and crimes like "Theft" or "Break and Enter" were classified as non-violent (`0`). Offenses that did not fit into either category were excluded from the dataset.
 
@@ -96,7 +103,7 @@ To analyze temporal patterns, the `OCC_HOUR` variable was grouped into broader t
 - **Afternoon**: 12 PM to 6 PM  
 - **Evening**: 6 PM to 12 AM  
 
-Additionally, the `PREMISES_TYPE` variable, which describes the type of location where the incident occurred, was trimmed to remove excess whitespace and ensure consistent formatting. This step was crucial to prevent unexpected NA values during analysis.
+Additionally, the `PREMISES_TYPE` variable, which describes the type of location where the incident occurred, was trimmed to remove excess whitespace and ensure consistent formatting. This step was to prevent unexpected NA values during analysis.
 
 The cleaning process also included filtering for crimes reported during the summer month of July, aligning the dataset with the study's focus on temporal and environmental patterns in criminal activity. After grouping, formatting, and filtering the data, all rows containing NA values in important columns were dropped to ensure a clean and analyzable dataset.
 
@@ -110,7 +117,7 @@ The primary outcome variable in this study is Violent Crime, which categorizes e
 
 By focusing on crimes involving violence, this outcome variable highlights important cases of interest for public safety and crime prevention efforts, as violent offenses often have severe consequences for victims and communities. This binary categorization simplifies the statistical analysis, enabling the application of logistic regression models to estimate the probability of violent crimes under varying conditions.
 
-Analyzing violent crime in conjunction with predictor variables such as premises type and time of day helps identify the circumstances under which the risk of violence is heightened. This outcome measure serves as a crucial indicator for assessing and improving community safety policies, as it reflects the most serious consequences of criminal activity and directs attention to factors that could reduce violent incidents.
+Analyzing violent crime in conjunction with predictor variables such as premises type and time of day helps identify the circumstances under which the risk of violence is heightened. This outcome measure serves as a indicator for assessing and improving community safety policies, as it reflects the most serious consequences of criminal activity and directs attention to factors that could reduce violent incidents.
 
 
 ```{r}
@@ -174,9 +181,9 @@ crime_data[1:5, 1:3] |>
 
 @fig-premises-type illustrates the distribution of violent versus non-violent crimes across different premises types. The results show that the highest number of crimes, both violent and non-violent, occur in "Outside" locations, followed by "Apartment" premises. Notably, violent crimes significantly outnumber non-violent ones in "Outside" locations, while "Apartments" and "Houses" have a more balanced distribution between the two crime types. Premises categorized as "Educational," "Transit," and "Other" show relatively low numbers of both violent and non-violent crimes, with "Educational" premises having the fewest incidents overall.
 
-@fig-time-of-day highlights the distribution of violent versus non-violent crimes by the time of day. The data reveals that violent crimes are most common during the "Evening," followed by "Afternoon" and "Early Morning." In contrast, non-violent crimes are more evenly distributed throughout the day but still peak during the "Evening." These findings suggest that the time of day plays a important role in influencing the likelihood of violent crimes, with evenings being a particularly high-risk period.
+@fig-time-of-day highlights the distribution of violent versus non-violent crimes by the time of day. The data explains that violent crimes are most common during the "Evening," followed by "Afternoon" and "Early Morning." In contrast, non-violent crimes are more evenly distributed throughout the day but still peak during the "Evening." These findings suggest that the time of day plays a important role in influencing the likelihood of violent crimes, with evenings being a particularly high-risk period.
 
-By examining these distributions, we gain insights into where and when violent crimes are most likely to occur. Understanding these patterns is essential for developing focused crime prevention strategies, such as increasing law enforcement presence in high-risk areas during evening hours or implementing community-based interventions in "Outside" locations.
+By examining these distributions, we gain intuitions into where and when violent crimes are most likely to occur. Understanding these patterns is essential for developing focused crime prevention strategies, such as increasing law enforcement presence in high-risk areas during evening hours or implementing community-based interventions in "Outside" locations.
 
 
 ```{r}
@@ -266,14 +273,13 @@ y_i|\pi_i &\sim \text{Bern}(\pi_i) \\
 
 In this model:
 
-- \(y_i\) represents the binary outcome variable indicating whether a crime is classified as violent (\(1\) for violent crimes, \(0\) for non-violent crimes).
-- \(\pi_i\) is the probability of a violent crime.
-- \(\alpha\) is the intercept, representing the baseline log-odds of a violent crime when all predictors are at their reference levels.
-- \(\beta_1\) and \(\beta_2\) are the coefficients associated with the predictor variables:
-  - `PREMISES_TYPE`: the type of premises where the crime occurred.
-  - `TIME_OF_DAY`: the time of day the crime occurred.
+- $\beta_1$ is the coefficient corresponding to the type of premises (\texttt{PREMISES\_TYPE}$_i$) where the crime occurred.
 
-The logistic link function (\(\text{logit}(\pi_i)\)) models the log-odds of violent crime as a linear combination of the predictors. The priors for the intercept (\(\alpha\)) and the coefficients (\(\beta_1\), \(\beta_2\)) follow a Normal distribution with mean \(0\) and standard deviation \(2.5\). These priors regularize the model, constraining the parameters to plausible values based on prior knowledge.
+- $\beta_2$ is the coefficient corresponding to the time of day (\texttt{TIME\_OF\_DAY}$_i$) when the crime occurred.
+
+
+
+The logistic link function ($\text{logit}(\pi_i)$) models the log-odds of violent crime as a linear combination of the predictors. The priors for the intercept ($\alpha$) and the coefficients ($\beta_1$, $\beta_2$) follow a Normal distribution with mean $0$ and standard deviation $2.5$. These priors regularize the model, constraining the parameters to plausible values based on prior knowledge.
 
 This Bayesian logistic regression model was implemented using the `rstanarm` package, leveraging Markov Chain Monte Carlo (MCMC) sampling for parameter estimation. Further diagnostics and posterior summaries are discussed in the supplementary materials (see Appendix @sec-model-details).
 
@@ -284,7 +290,7 @@ Each predictor in the model represents a specific characteristic of the crime an
 
 For `TIME_OF_DAY`, it is hypothesized that the "Evening" period may exhibit a higher likelihood of violent crimes, as this time is often associated with increased social activities and potential for interpersonal conflict. "Early Morning" may also show elevated odds due to decreased public surveillance and fewer witnesses. In contrast, "Morning" and "Afternoon" are expected to have lower odds, reflecting typical daytime routines with higher levels of oversight and structured activity.
 
-By incorporating these predictors into the Bayesian logistic regression model, this study seeks to identify and quantify the relationships between crime characteristics and the likelihood of violent outcomes, providing practical findings for targeted interventions.
+These predictors, incorporated into a Bayesian logistic regression model, highlight relationships between crime characteristics and violent outcomes.
 
 
 ```{r}
@@ -309,7 +315,7 @@ modelsummary(
 
 # Results {#sec-result}
 
-Our results are summarized in @tbl-modelresults. The findings align with our expectations, providing insights into how premises type and time of day influence the likelihood of violent crimes. To avoid multicollinearity, the model excludes one level from each categorical predictor as the reference group: "Apartment" for `PREMISES_TYPE` and "Early Morning" for `TIME_OF_DAY`. The intercept represents the estimated log-odds of violent crime occurring when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of a violent crime occurring at an "Apartment" during "Early Morning" is 0.881.
+Our results are summarized in @tbl-modelresults. The findings align with our expectations, providing intuitions into how premises type and time of day influence the likelihood of violent crimes. To avoid multicollinearity, the model excludes one level from each categorical predictor as the reference group: "Apartment" for `PREMISES_TYPE` and "Early Morning" for `TIME_OF_DAY`. The intercept represents the estimated log-odds of violent crime occurring when all other predictors are held constant at their reference levels. In this case, the estimated log-odds of a violent crime occurring at an "Apartment" during "Early Morning" is 0.881.
 
 The type of premises strongly influences the likelihood of violent crimes. For instance, crimes occurring in "Transit" premises are far more likely to be violent compared to the reference group. The estimated coefficient for `PREMISES_TYPETransit` is 2.363, indicating a substantial increase in the log-odds of violent crime in this context. On the other hand, crimes occurring in "Commercial" and "Educational" premises are less likely to be violent, with coefficients of -0.925 and -0.957, respectively. Similarly, crimes at "House" premises exhibit the lowest likelihood of violence, as reflected by a coefficient of -1.519. These results highlight that location plays a important role in determining whether a crime is violent or non-violent.
 
@@ -324,29 +330,56 @@ The coefficients are reported in log-odds, where a positive value indicates an i
 
 ## Relationship between Premises Type and Violent Crime
 
-The analysis highlights that premises type significantly influences the likelihood of violent crimes. Crimes occurring in "Transit" locations are strongly associated with higher odds of being classified as violent compared to the reference group ("Apartment"). This finding aligns with expectations, as transit environments often involve high volumes of people and limited surveillance, which may increase the potential for interpersonal conflicts. Similarly, "Outside" locations exhibit a higher likelihood of violent crimes, likely due to their open and less controlled nature, which may facilitate confrontations or opportunistic violence. In contrast, premises such as "Commercial," "Educational," and "House" are associated with lower odds of violent crimes. These findings suggest that environments with greater structural or social control (e.g., schools, private residences) are less conducive to violent activities. These insights underscore the importance of targeted safety measures in high-risk locations, such as enhancing surveillance in transit areas or increasing community policing efforts in outdoor public spaces.
+The analysis underscores that premises type significantly influences the likelihood of violent crimes. Transit locations, often hubs of activity with limited surveillance, exhibit the highest odds of violent crimes. This aligns with urban safety theories suggesting that environments characterized by anonymity and low surveillance facilitate opportunistic and interpersonal violence. Similarly, outdoor areas, with their open and unregulated nature, remain high-risk zones for confrontations. In contrast, locations with inherent structural or social control, such as residential houses and schools, show markedly reduced odds of violent crimes. These findings emphasize the interplay between spatial control and crime likelihood, suggesting that environments fostering visibility, routine, and structural oversight are critical deterrents for violent activity. Policymakers might explore how urban designs, such as transit hubs with natural surveillance features, could mitigate risks in identified high-crime premises.
 
 ## Relationship between Time of Day and Violent Crime
 
-Time of day also plays a important role in determining the likelihood of violent crimes. The model results indicate that "Afternoon" and "Evening" periods are associated with elevated odds of violent crimes compared to the reference period ("Early Morning"). This pattern likely reflects increased social interactions and activities during these times, which may lead to heightened opportunities for conflicts or criminal acts. In contrast, "Morning" hours exhibit a negligible increase in violent crime likelihood, possibly reflecting a time of day characterized by structured routines and reduced social friction. These findings highlight the need for time-sensitive interventions, such as increased police presence during evening hours or community-based programs to address the underlying causes of violent behavior during high-risk times.
+Time of day has emerged as another critical determinant of violent crime patterns, reflecting the temporal rhythms of human activity. The elevated risk of violent crimes during afternoon and evening hours correlates with periods of heightened social interaction and mobility. Beyond the opportunity framework, this trend could also be linked to psychological and behavioral factors, such as stress accumulation or alcohol consumption patterns, which intensify during these hours. Morning hours, often structured by routines and higher institutional oversight, exhibit a stabilizing effect, further reinforcing the connection between predictability in human activity and crime reduction. These findings suggest that temporal interventions, such as staggered policing schedules or temporal zoning laws, could play a key role in mitigating violence during high-risk periods.
 
-## Implications for Policy and Prevention
+## Expanding Implications for Policy and Prevention
 
-The results provide practical findings for crime prevention and public safety policies. For example, transit and outdoor areas, identified as high-risk premises, could benefit from increased surveillance, improved lighting, and targeted community engagement programs. Similarly, allocating law enforcement resources more strategically to focus on evening and afternoon periods could help deter violent crimes during these high-risk times. The findings also support urban planning efforts that enhance safety features in public spaces, such as the installation of security cameras and the promotion of neighborhood watch programs. By addressing the specific premises and times associated with violent crimes, policymakers can implement evidence-based strategies to reduce violence and improve community safety.
+### Integrative Safety Planning
 
-## Limitations
+Building upon the findings, integrating urban design with crime prevention could yield significant dividends. For instance, redesigning transit hubs with open sightlines and enhanced illumination may disrupt anonymity and reduce violent crime opportunities. Similarly, encouraging the adoption of Crime Prevention Through Environmental Design (CPTED) principles in outdoor public spaces could transform potential high-crime locations into safer environments. Measures like pedestrian-oriented lighting, community-centric activities in outdoor spaces, and visible security features would align with these findings to promote safer urban environments.
+
+### Socioeconomic Dimensions of Intervention
+
+While the current study primarily addresses spatial and temporal patterns, incorporating socioeconomic factors into crime prevention strategies could provide a more holistic framework. For instance, transit areas may not only be risky due to environmental factors but also because they serve as nexus points for marginalized populations. Acknowledging these dynamics, policymakers could complement structural safety measures with socioeconomic upliftment programs, such as housing initiatives near transit hubs or employment opportunities targeting vulnerable demographics.
+
+### Strategic Resource Allocation
+
+The predictive insights offered by this study support law enforcement agencies in adopting data-driven approaches for resource allocation. By utilizing the RESTful API developed from this study, stakeholders can simulate various scenarios to predict high-risk situations and proactively deploy resources to mitigate risks. Expanding the API’s capabilities to integrate real-time data inputs, such as weather or crowd density, could further enhance its utility for dynamic and responsive safety planning.
+
+## Limitations {#sec-limitations}
 
 ### Data Constraints
 
-One limitation of this study is the exclusion of crimes that could not be definitively classified as violent or non-violent. While necessary to ensure data consistency, this filtering process may omit incidents that could provide additional context for understanding violent crime dynamics. Future research should explore ways to include these ambiguous cases to improve the comprehensiveness of the analysis.
+The study uses police-reported crime data, which excludes unreported incidents. This limitation is particularly important in areas where trust in law enforcement may be lower, potentially leading to underreporting. As a result, the analysis might underestimate the prevalence of violent crime or inaccurately represent its distribution. Future research could address this by incorporating additional data sources, such as hospital records or victim surveys, to provide a more complete picture.
 
 ### Simplification of Time Categories
 
-Grouping time into four broad categories (Early Morning, Morning, Afternoon, and Evening) simplifies analysis but may obscure more granular patterns in violent crime occurrence. Future research could explore finer temporal granularity, such as analyzing crimes on an hourly basis, to capture additional nuances in time-of-day effects.
+Dividing time into four broad categories (Early Morning, Morning, Afternoon, and Evening) offers clarity but limits the ability to observe finer patterns. For example, crimes occurring during transitional periods, such as early evening or late night, might follow distinct trends not captured by this framework. Future studies could use more detailed time intervals to better align with changes in social activity and behavior.
 
-## Future Steps
+### Contextual Variability
 
-To enhance the utility and scope of this research, future studies should consider incorporating additional predictors, such as socioeconomic factors, neighborhood characteristics, or the presence of law enforcement resources. These variables could provide a more comprehensive understanding of the conditions contributing to violent crimes. Additionally, integrating spatial analysis with precise location data could identify specific hotspots for targeted interventions. Policymakers and city planners could leverage these insights to allocate resources more effectively, reduce violent crimes, and promote public safety in Toronto and beyond.
+Factors such as seasonal events, public holidays, or local enforcement policies may affect crime patterns but were not included in this study. While July was chosen as a representative high-activity month, these findings may not extend to other times of the year. Future work could consider these contextual elements to enhance the understanding of violent crime dynamics.
+
+## Expanding Future Directions
+
+### Spatial Granularity
+
+Future studies could use GIS technology to conduct detailed spatial analyses, identifying crime hotspots within larger categories like transit or outdoor spaces. Such an approach could guide precise interventions at the neighborhood or block level, helping to optimize prevention efforts and resource allocation.
+
+### Temporal and Behavioral Factors
+
+Exploring time with finer granularity, such as hourly trends, could reveal patterns that are currently obscured. Additionally, combining behavioral data—such as crowd size or environmental conditions—with existing predictors may uncover new insights, such as the combined impact of transit activity and evening hours on crime risk.
+
+## Conclusion
+
+This study identifies the significant roles that premises type and time of day play in shaping the likelihood of violent crimes in Toronto. High-risk locations, such as transit hubs and outdoor spaces, and peak times, such as afternoons and evenings, highlight areas for focused interventions. These findings can inform practical safety measures, such as improved surveillance and better resource allocation during critical times and in high-risk areas. Although the analysis is limited by its broad categories, it demonstrates the value of understanding crime patterns through spatial and temporal dimensions, laying the groundwork for future research and actionable safety strategies.
+
+
+
 
 \newpage
 
@@ -403,58 +436,168 @@ Victims listed in the Toronto Police Service records for violent crimes occurrin
 
 ## Survey Instrument
 
-The questionnaire is divided into six sections:
+This questionnaire is designed to collect detailed information from victims of violent crimes. The sections and questions align precisely with the Google Form provided. Additionally, attention checks have been included in the survey to ensure data quality. The survey is accessible at the following link:  
+[https://forms.gle/d81J3S9HpPgJPUkM6](https://forms.gle/d81J3S9HpPgJPUkM6)
 
 ### Section 1: Demographics
 
-1. What is your age?
-2. What is your gender? (Male, Female, Non-binary, Prefer not to say)
-3. What is your ethnicity? (Open-ended)
-4. What is your highest level of education completed?
-5. What is your current occupation?
+1. **What is your age?**  
+   *Required*  
+
+2. **What is your gender?**  
+   *Required*  
+   - Male  
+   - Female  
+   - Non-binary  
+   - Prefer not to say  
+
+3. **What is your ethnicity?**  
+   *Required*  
+
+4. **What is your highest level of education completed?**  
+   *Required*  
+
+5. **What is your current occupation?**  
+   *Required*  
 
 ### Section 2: Incident Details
 
-6. On what date did the incident occur?
-7. At what time did the incident occur? (Specify hour)
-8. Where did the incident occur? (Specific address or nearest intersection)
-9. What type of premises was it? (Apartment, House, Commercial, Outside, Transit, Educational, Other)
-10. What were you doing just before the incident? (Open-ended)
-11. Were you familiar with this area? (Yes/No)
+6. **On what date did the incident occur?**  
+   *Required (e.g., January 7, 2019)*  
+
+7. **At what time did the incident occur?**  
+   *Required*  
+
+8. **Where did the incident occur?**  
+   *Required*  
+
+9. **What type of premises was it?**  
+   *Required*  
+   - Apartment  
+   - House  
+   - Commercial  
+   - Outside  
+   - Transit  
+   - Educational  
+   - Other: [Open-ended response]  
+
+10. **What were you doing just before the incident?**  
+    *Required*  
+
+11. **Were you familiar with this area?**  
+    *Required*  
+    - Yes  
+    - No  
+
+12. **Select the option that does NOT belong in this list of fruits:**  
+    - Apple  
+    - Banana  
+    - Carrot  
+    - Orange  
 
 ### Section 3: Circumstances of the Incident
 
-12. Was the perpetrator known to you? (Yes/No)  
-13. How many perpetrators were involved?  
-14. Can you describe the perpetrator(s)? (Open-ended)  
-15. Were any weapons used? (Yes/No)  
-   - If Yes: Please specify the type of weapon.  
-16. Do you know or suspect the motive behind the crime? (Open-ended)
+13. **Was the perpetrator known to you?**  
+    *Required*  
+    - Yes  
+    - No  
+
+14. **How many perpetrators were involved?**  
+    *Required*  
+
+15. **Can you describe the perpetrator(s)?**  
+    *Required*  
+
+16. **Were any weapons used?**  
+    *Required*  
+    - Yes  
+    - No  
+    - If Yes: *Please specify the type of weapon*  
+
+17. **Do you know or suspect the motive behind the crime?**  
+    *Required*  
 
 ### Section 4: Perceptions and Feelings
 
-17. Prior to the incident, how safe did you feel in that area? (Likert scale 1-5)  
-18. Were you aware of any risks or previous incidents in the area? (Yes/No)  
-19. How did you feel during the incident? (Open-ended)  
-20. How have you felt since the incident? (Open-ended)  
+18. **Prior to the incident, how safe did you feel in that area?**  
+    *Required (Likert scale: Not Safe at All to Very Safe)*  
+
+19. **Were you aware of any risks or previous incidents in the area?**  
+    *Required*  
+    - Yes  
+    - No  
+
+20. **How did you feel during the incident?**  
+    *Required*  
+
+21. **How have you felt since the incident?**  
+    *Required*  
 
 ### Section 5: Reporting and Response
 
-21. How was the incident reported? (Self-reported, Witness reported, Other)  
-22. Approximately how long did it take for authorities to respond? (Specify in minutes)  
-23. How satisfied are you with the response from authorities? (Likert scale 1-5)  
-24. Have you received any support services since the incident? (Yes/No)  
-   - If Yes: Please specify.
+22. **How was the incident reported?**  
+    *Required*  
+    - Self-reported  
+    - Witness reported  
+    - Other: [Open-ended response]  
+
+23. **Approximately how long did it take for authorities to respond?**  
+    *Required*  
+
+24. **How satisfied are you with the response from authorities?**  
+    *Required (Likert scale: Not Satisfied at All to Very Satisfied)*  
+
+25. **Have you received any support services since the incident?**  
+    *Required*  
+    - Yes  
+    - No  
+    - If Yes: *Please specify*
+
+26. **Which of these options has an even number of letters?**  
+    - Apple  
+    - Banana  
+    - Orange  
+    - Kiwi  
 
 ### Section 6: Additional Factors
 
-25. Had you consumed alcohol or drugs prior to the incident? (Yes/No)  
-26. Do you believe the perpetrator(s) had consumed alcohol or drugs? (Yes/No/Don't know)  
-27. What were the lighting conditions at the time? (Well-lit, Dimly lit, Dark)  
-28. What was the weather like at the time? (Clear, Rainy, Snowy, Other)  
-29. Were there any security measures present? (Cameras, Security personnel, None, Other)  
-30. Were there other people around at the time? (Yes/No)  
-   - If Yes: Approximately how many?  
+27. **Had you consumed alcohol or drugs prior to the incident?**  
+    *Required*  
+    - Yes  
+    - No  
+
+28. **Do you believe the perpetrator(s) had consumed alcohol or drugs?**  
+    *Required*  
+    - Yes  
+    - No  
+    - Don't know  
+
+29. **What were the lighting conditions at the time?**  
+    *Required*  
+    - Well-lit  
+    - Dimly lit  
+    - Dark  
+
+30. **What was the weather like at the time?**  
+    *Required*  
+    - Clear  
+    - Rainy  
+    - Snowy  
+    - Other: [Open-ended response]  
+
+31. **Were there any security measures present?**  
+    *Required*  
+    - Cameras  
+    - Security personnel  
+    - None  
+    - Other: [Open-ended response]  
+
+32. **Were there other people around at the time?**  
+    *Required*  
+    - Yes  
+    - No  
+    - If Yes: *Approximately how many?*  
+
 
 ## Ethical Considerations
 
@@ -514,11 +657,77 @@ Data collection will occur within two months following the incidents to ensure a
 - Verification of data entry accuracy.
 - Handling of missing data according to predefined protocols.
 
-### Analysis Plan
+### Data Simulation
 
-- **Descriptive Statistics**: Frequencies, means, and standard deviations for all variables.
-- **Inferential Statistics**: Logistic regression to identify factors associated with violent crime likelihood.
-- **Software**: Statistical analysis will be conducted using R or SPSS.
+To validate and explore the survey design, a simulated dataset was generated to reflect the variables of interest. This dataset includes:
+
+- **VIOLENT_CRIME**: Binary variable indicating whether a crime was violent (1) or non-violent (0).
+- **ALCOHOL_INVOLVED**: Binary variable indicating whether alcohol was involved in the incident (1 = Yes, 0 = No).
+- **AREA_FAMILIARITY**: Binary variable indicating whether the victim was familiar with the area (1 = Yes, 0 = No).
+- **LIGHTING_CONDITIONS**: Categorical variable describing the lighting conditions at the time of the incident ('Well-lit', 'Dimly lit', 'Dark').
+
+The dataset was generated using R, saved as a CSV file, and subsequently visualized to ensure the data reflects the survey's design specifications.
+
+```{r}
+#| label: fig-simulated-crime
+#| fig-cap: "Visualizations of Simulated Crime Data Variables"
+#| fig-subcap: ["Proportion of Violent Crimes", "Lighting Conditions Distribution", "Alcohol Involvement", "Area Familiarity"]
+#| echo: false
+#| warning: false
+#| message: false
+
+# Import the simulated data from the specified CSV file
+simulated_data <- read_csv(here::here("data/00-simulated_data/survey_simulated_crime_data.csv"))
+
+# Visualization: Proportion of Violent Crimes
+violent_crime_plot <- simulated_data %>%
+  ggplot(aes(x = factor(VIOLENT_CRIME))) +
+  geom_bar(fill = "steelblue") +
+  labs(
+    x = "Violent Crime (0 = No, 1 = Yes)",
+    y = "Count",
+    title = "Distribution of Violent Crimes"
+  ) +
+  theme_minimal()
+
+# Visualization: Lighting Conditions
+lighting_conditions_plot <- simulated_data %>%
+  ggplot(aes(x = LIGHTING_CONDITIONS)) +
+  geom_bar(fill = "skyblue") +
+  labs(
+    x = "Lighting Conditions",
+    y = "Count",
+    title = "Lighting Conditions at Incident Time"
+  ) +
+  theme_minimal()
+
+# Visualization: Proportion of Alcohol Involvement
+alcohol_involvement_plot <- simulated_data %>%
+  ggplot(aes(x = factor(ALCOHOL_INVOLVED))) +
+  geom_bar(fill = "tomato") +
+  labs(
+    x = "Alcohol Involved (0 = No, 1 = Yes)",
+    y = "Count",
+    title = "Alcohol Involvement in Incidents"
+  ) +
+  theme_minimal()
+
+# Visualization: Area Familiarity
+area_familiarity_plot <- simulated_data %>%
+  ggplot(aes(x = factor(AREA_FAMILIARITY))) +
+  geom_bar(fill = "purple") +
+  labs(
+    x = "Area Familiarity (0 = No, 1 = Yes)",
+    y = "Count",
+    title = "Familiarity with Area"
+  ) +
+  theme_minimal()
+
+# Combine all plots into a 2x2 layout
+(violent_crime_plot | lighting_conditions_plot) /
+(alcohol_involvement_plot | area_familiarity_plot)
+```
+
 
 ## Quality Assurance
 
@@ -534,23 +743,26 @@ Data collection will occur within two months following the incidents to ensure a
 
 ## Dissemination of Results
 
-- Findings will be compiled into a comprehensive report.
+- Findings will be compiled into a report.
 - Academic papers will be prepared for publication in peer-reviewed journals.
 - Results will be shared with the Toronto Police Service, policymakers, and community organizations.
 - Presentations will be made at relevant conferences and meetings.
 
+
 ## Conclusion
 
-This survey aims to enhance understanding of violent crimes in Toronto by incorporating victim perspectives and experiences. The comprehensive data collected will contribute to more effective prevention strategies and support services, ultimately aiming to reduce the incidence of violent crimes and improve community safety.
+This survey aims to enhance understanding of violent crimes in Toronto by incorporating victim perspectives and experiences. The data collected will contribute to more effective prevention strategies and support services, ultimately aiming to reduce the incidence of violent crimes and improve community safety.
+
+\newpage
 
 
 # Model details {#sec-model-details}
 
 ## Posterior Predictive Check and Prior-Posterior Comparison
 
-The posterior predictive check in @fig-post_dist provides an evaluation of how well the Bayesian logistic regression model replicates the observed data. The posterior distribution (\(y_{\text{rep}}\)) closely aligns with the observed data (\(y\)), indicating that the model provides a good fit and captures the essential patterns in the data.
+The posterior predictive check in @fig-post_dist provides an evaluation of how well the Bayesian logistic regression model replicates the observed data. The posterior distribution ($y_{\text{rep}}$) closely aligns with the observed data ($y$), indicating that the model provides a good fit and captures the essential patterns in the data.
 
-In @fig-post_prior, the posterior distributions of the model parameters are compared against their priors. This visual comparison highlights how the observed data influenced the posterior estimates. For instance, predictors such as `PREMISES_TYPETransit` and `TIME_OF_DAYAfternoon` show a notable shift in their posterior distributions compared to the priors, reflecting strong evidence provided by the data. Conversely, predictors with minimal shifts suggest less data-driven evidence or smaller effects on the model outcome.
+In @fig-post_prior, the posterior distributions of the model parameters are compared against their priors. This visual comparison highlights how the observed data influenced the posterior estimates. For instance, predictors such as `PREMISES_TYPETransit` and `TIME_OF_DAYAfternoon` show a notable shift in their posterior distributions compared to the priors, reflecting strong evidence provided by the data. Conversely, predictors with minimal shifts suggest weaker evidence or smaller effects on the model outcome.
 
 ```{r}
 #| label: fig-post_dist
@@ -613,7 +825,7 @@ posterior_vs_prior(violent_crime_model, size = 0.1) +
 
 ### Markov Chain Monte Carlo Convergence Check
 
-To assess the convergence of the Markov Chain Monte Carlo (MCMC) sampling for the Bayesian logistic regression model, trace plots and Rhat plots were analyzed. These diagnostics are crucial to ensure that the chains mix well and converge to a stable distribution, providing reliable parameter estimates.
+To assess the convergence of the Markov Chain Monte Carlo (MCMC) sampling for the Bayesian logistic regression model, trace plots and Rhat plots were analyzed. These diagnostics are to ensure that the chains mix well and converge to a stable distribution, providing reliable parameter estimates.
 
 #### Trace Plots
 
@@ -671,7 +883,7 @@ plot(violent_crime_model, "rhat")
 
 ## 90% Credibility Interval {#sec-credibility-interval}
 
-Figures @fig-modelresults1 and @fig-modelresults2 visualize the 90% credible intervals for the predictors in the Bayesian logistic regression model. These plots provide insights into the uncertainty surrounding the estimated coefficients for each predictor.
+Figures @fig-modelresults1 and @fig-modelresults2 visualize the 90% credible intervals for the predictors in the Bayesian logistic regression model. These plots provide intuitions into the uncertainty surrounding the estimated coefficients for each predictor.
 
 Figure @fig-modelresults1 displays the 90% credible intervals for all predictors without restrictions on the x-axis. This plot shows how the predictors such as `PREMISES_TYPE` and `TIME_OF_DAY` influence the likelihood of violent crimes. For example, `PREMISES_TYPETransit` has a high positive credible interval, indicating a significant increase in the likelihood of violent crime in transit areas. Conversely, `PREMISES_TYPECommercial` and `PREMISES_TYPEEducational` have negative credible intervals, indicating a lower likelihood of violent crimes in these premises types.
 
@@ -709,8 +921,8 @@ model_plot + xlim(-5, 5) +  # Adjust the limits as needed
 
 ```
 
-\newpage
 
+\newpage
 
 # References
 

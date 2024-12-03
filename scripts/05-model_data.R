@@ -1,11 +1,11 @@
 #### Preamble ####
 # Purpose: Models violent crime likelihood using binary outcome and predictors for crime characteristics
-# Author: [Your Name]
+# Author: Tim Chen
 # Date: [Today's Date]
-# Contact: [Your Email]
+# Contact: timwt.chen@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Cleaned crime data with binary violent crime classification and relevant predictors
-# Any other information needed? Ensure dependencies are installed and the data file path is correct.
+# Pre-requisites: The cleaned crime data must be saved as a Parquet file with binary violent crime classification and relevant predictors
+# Any other information needed? Ensure dependencies are installed and the dataset file path is correct.
 
 #### Workspace Setup ####
 library(tidyverse)

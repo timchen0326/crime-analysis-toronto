@@ -1,0 +1,1001 @@
+VIOLENT_CRIME,ALCOHOL_INVOLVED,AREA_FAMILIARITY,LIGHTING_CONDITIONS
+1,0,0,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dark
+1,0,0,Well-lit
+0,0,1,Well-lit
+1,0,0,Dark
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Dimly lit
+1,1,1,Well-lit
+0,0,1,Dimly lit
+0,0,1,Dark
+0,1,0,Dimly lit
+1,0,0,Well-lit
+1,1,0,Dark
+0,0,1,Well-lit
+0,0,0,Well-lit
+0,1,0,Well-lit
+0,0,1,Dimly lit
+1,1,0,Dimly lit
+0,1,0,Dark
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,1,Well-lit
+0,1,1,Dimly lit
+1,0,1,Dark
+1,0,1,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,1,Dimly lit
+1,0,1,Well-lit
+0,1,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,1,1,Dark
+0,1,1,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,1,1,Well-lit
+1,0,1,Dark
+0,0,1,Dark
+0,1,0,Dimly lit
+1,0,0,Well-lit
+1,1,1,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dark
+1,1,0,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,1,Dimly lit
+0,1,1,Dark
+0,0,0,Dimly lit
+1,0,1,Well-lit
+1,0,1,Dimly lit
+1,0,1,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,0,1,Dimly lit
+1,1,0,Dark
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dark
+0,1,1,Dimly lit
+1,1,1,Dimly lit
+0,1,1,Dimly lit
+1,0,1,Well-lit
+0,1,0,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,0,Dimly lit
+1,0,0,Dark
+0,0,1,Dimly lit
+1,0,1,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dark
+0,0,0,Dark
+0,0,0,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,1,1,Dimly lit
+0,0,1,Dimly lit
+0,0,1,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+1,1,0,Well-lit
+0,0,0,Well-lit
+1,0,1,Dark
+0,1,0,Well-lit
+0,1,1,Dimly lit
+0,0,1,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+1,0,1,Dimly lit
+1,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,1,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,1,0,Dimly lit
+0,0,0,Dimly lit
+0,1,0,Dark
+1,0,0,Dark
+1,0,0,Dimly lit
+1,0,0,Dark
+0,1,1,Well-lit
+0,0,0,Dimly lit
+1,1,1,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,1,0,Dark
+1,0,0,Dimly lit
+0,1,0,Dimly lit
+0,1,1,Dimly lit
+1,0,0,Dimly lit
+0,1,1,Well-lit
+0,0,0,Dimly lit
+1,0,1,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Dimly lit
+0,1,1,Dimly lit
+0,1,1,Dimly lit
+1,1,1,Dark
+0,1,0,Dark
+0,0,1,Well-lit
+0,0,1,Well-lit
+0,1,0,Well-lit
+0,1,0,Well-lit
+0,0,1,Well-lit
+1,1,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dark
+0,0,1,Dark
+0,1,0,Dimly lit
+0,0,0,Well-lit
+1,1,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+1,0,1,Well-lit
+1,0,1,Dark
+1,1,1,Dark
+1,0,0,Dimly lit
+1,1,1,Dimly lit
+1,0,1,Dimly lit
+1,0,1,Well-lit
+0,0,1,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dark
+0,1,1,Well-lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+1,1,0,Well-lit
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+1,0,1,Well-lit
+0,0,0,Dark
+0,0,1,Dimly lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+0,1,1,Dark
+1,1,0,Dark
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,1,0,Dimly lit
+0,0,0,Dark
+1,1,0,Well-lit
+0,1,0,Well-lit
+0,0,1,Well-lit
+1,0,1,Well-lit
+0,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,1,Dimly lit
+1,1,1,Well-lit
+0,0,1,Well-lit
+1,0,0,Well-lit
+0,1,0,Well-lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,0,Dark
+1,0,1,Dark
+1,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+1,0,0,Dark
+1,0,1,Well-lit
+0,0,0,Dimly lit
+0,1,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,0,1,Well-lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+1,0,1,Dark
+1,0,1,Well-lit
+0,0,1,Dark
+1,0,1,Dimly lit
+0,0,1,Dark
+1,0,1,Dark
+1,1,1,Well-lit
+0,0,1,Dark
+0,0,1,Dark
+1,1,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dark
+0,1,0,Dark
+1,0,1,Dimly lit
+1,0,0,Well-lit
+1,0,1,Well-lit
+0,1,0,Dimly lit
+0,0,1,Well-lit
+1,1,0,Dimly lit
+1,0,1,Well-lit
+1,1,0,Dark
+1,0,0,Well-lit
+0,1,0,Dark
+1,0,1,Well-lit
+0,0,0,Dark
+0,1,0,Well-lit
+1,0,1,Well-lit
+0,0,0,Dark
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,1,1,Dimly lit
+0,1,1,Dimly lit
+1,0,0,Well-lit
+0,1,0,Dimly lit
+1,0,1,Well-lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,1,Dark
+0,0,1,Well-lit
+0,0,0,Well-lit
+1,0,1,Well-lit
+1,0,1,Dimly lit
+0,1,0,Dark
+0,0,1,Well-lit
+1,0,0,Well-lit
+1,0,1,Well-lit
+1,0,1,Dark
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Well-lit
+1,1,0,Dark
+0,0,0,Dimly lit
+1,0,1,Dimly lit
+1,1,0,Well-lit
+0,1,0,Well-lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,1,0,Dark
+0,0,1,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dark
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,0,1,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+0,1,1,Dark
+1,0,1,Dimly lit
+0,0,0,Dark
+1,0,0,Well-lit
+1,0,0,Dimly lit
+1,0,0,Well-lit
+1,1,0,Well-lit
+0,0,0,Well-lit
+0,1,1,Well-lit
+0,1,1,Well-lit
+1,0,1,Dark
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dark
+0,0,1,Dimly lit
+1,1,1,Dark
+0,0,0,Well-lit
+0,0,0,Well-lit
+1,0,1,Dimly lit
+0,0,0,Dark
+0,0,1,Dark
+0,0,0,Dark
+0,0,0,Well-lit
+1,0,0,Dark
+0,1,1,Dimly lit
+0,0,1,Dark
+1,0,1,Well-lit
+1,1,1,Dark
+0,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,1,Dimly lit
+1,1,0,Dark
+1,0,0,Well-lit
+0,0,1,Well-lit
+1,1,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dark
+1,1,0,Dimly lit
+1,1,0,Well-lit
+1,0,1,Well-lit
+1,1,0,Well-lit
+1,0,0,Well-lit
+0,0,1,Well-lit
+0,0,1,Well-lit
+1,1,1,Dark
+0,0,0,Dark
+1,0,1,Dark
+0,0,1,Dimly lit
+1,0,0,Well-lit
+1,0,0,Dark
+1,1,0,Well-lit
+1,0,0,Dark
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dark
+1,0,0,Dark
+0,0,1,Dimly lit
+1,1,1,Dimly lit
+0,1,1,Well-lit
+0,1,0,Dimly lit
+1,0,0,Well-lit
+0,1,0,Dark
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Well-lit
+1,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,0,Well-lit
+1,1,1,Dimly lit
+0,0,0,Well-lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Well-lit
+1,1,0,Well-lit
+0,1,0,Well-lit
+1,0,0,Dimly lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Well-lit
+1,0,0,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,1,Well-lit
+0,1,1,Dimly lit
+0,1,1,Dimly lit
+1,1,1,Well-lit
+0,0,1,Well-lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Well-lit
+1,0,0,Well-lit
+0,0,1,Dark
+1,0,0,Dimly lit
+1,1,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Dark
+0,1,0,Well-lit
+1,0,1,Dimly lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+1,0,1,Well-lit
+1,1,1,Dimly lit
+1,1,1,Dark
+0,0,0,Well-lit
+0,1,1,Dimly lit
+1,1,1,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+0,0,1,Dimly lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Well-lit
+1,0,1,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+0,1,1,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dark
+0,1,1,Well-lit
+0,0,1,Dimly lit
+0,0,1,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,1,1,Well-lit
+1,1,0,Dimly lit
+0,0,1,Dark
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dimly lit
+0,0,0,Well-lit
+1,0,1,Dark
+0,1,0,Dark
+0,0,0,Well-lit
+0,0,0,Dark
+1,1,0,Well-lit
+0,0,0,Well-lit
+0,1,1,Dimly lit
+0,1,0,Dark
+0,1,1,Dark
+0,0,0,Dark
+1,0,0,Well-lit
+0,0,1,Well-lit
+1,0,1,Dark
+0,0,1,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,0,1,Dimly lit
+1,0,1,Well-lit
+1,1,0,Dimly lit
+0,1,1,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Dark
+0,0,0,Dimly lit
+1,0,1,Well-lit
+1,0,1,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+1,0,1,Well-lit
+1,0,1,Dark
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+0,1,1,Dark
+1,1,0,Well-lit
+0,1,1,Dark
+1,0,1,Dark
+1,0,0,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+1,0,1,Well-lit
+0,0,0,Dimly lit
+1,1,0,Dimly lit
+0,1,0,Well-lit
+0,0,1,Well-lit
+1,1,1,Well-lit
+0,0,0,Well-lit
+1,1,0,Well-lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+1,0,1,Well-lit
+0,1,1,Well-lit
+0,1,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+1,1,0,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dark
+0,0,0,Well-lit
+0,1,0,Well-lit
+0,1,1,Well-lit
+1,0,1,Well-lit
+0,0,0,Dark
+0,0,1,Dimly lit
+0,0,1,Well-lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+1,0,1,Well-lit
+1,1,1,Dimly lit
+1,1,0,Dimly lit
+0,1,0,Dimly lit
+1,0,1,Well-lit
+0,0,0,Well-lit
+0,1,0,Well-lit
+0,1,0,Well-lit
+0,0,0,Dimly lit
+1,1,0,Dark
+1,1,1,Well-lit
+0,1,0,Dimly lit
+1,1,1,Dimly lit
+1,0,0,Well-lit
+1,1,0,Dimly lit
+0,0,0,Dark
+0,1,1,Dark
+1,0,0,Well-lit
+0,0,1,Dark
+0,1,1,Dimly lit
+1,0,0,Well-lit
+0,1,0,Dimly lit
+0,1,0,Well-lit
+1,0,0,Dimly lit
+1,0,1,Dark
+0,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dark
+0,0,1,Dimly lit
+0,0,1,Well-lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+1,1,1,Dark
+1,0,0,Well-lit
+1,0,0,Well-lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+1,1,0,Dimly lit
+0,1,1,Dark
+1,0,1,Well-lit
+1,0,0,Well-lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+1,0,1,Dark
+0,1,0,Dark
+0,1,1,Well-lit
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dark
+0,0,0,Well-lit
+1,0,0,Well-lit
+1,1,0,Dimly lit
+1,1,1,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dark
+0,0,1,Well-lit
+1,0,1,Well-lit
+0,0,1,Dimly lit
+0,1,0,Dark
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+1,1,1,Dimly lit
+1,1,0,Dimly lit
+1,0,1,Well-lit
+0,0,0,Well-lit
+0,1,1,Dark
+1,0,0,Well-lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+1,1,1,Dimly lit
+1,1,0,Well-lit
+0,0,0,Dark
+0,0,0,Well-lit
+0,1,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,1,1,Dimly lit
+1,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dark
+0,0,1,Dark
+0,1,1,Well-lit
+0,0,0,Dimly lit
+0,0,1,Well-lit
+1,1,1,Well-lit
+0,0,1,Well-lit
+0,1,0,Dimly lit
+1,0,0,Dimly lit
+1,1,0,Well-lit
+0,1,1,Well-lit
+1,0,0,Well-lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+1,1,1,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Dark
+0,0,1,Well-lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+1,0,1,Well-lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+1,1,0,Well-lit
+1,0,0,Dimly lit
+0,1,0,Dark
+1,0,0,Dimly lit
+0,0,1,Dimly lit
+0,0,1,Dimly lit
+0,0,1,Well-lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+1,0,0,Well-lit
+0,0,0,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+0,0,1,Dimly lit
+1,0,0,Dark
+0,1,0,Dimly lit
+0,1,0,Well-lit
+1,1,0,Well-lit
+0,0,0,Well-lit
+1,1,1,Dimly lit
+1,0,0,Well-lit
+1,1,1,Dimly lit
+1,0,1,Dimly lit
+0,0,0,Dark
+0,0,0,Dark
+0,0,0,Dark
+0,0,0,Dimly lit
+0,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,1,Well-lit
+0,0,0,Well-lit
+0,0,0,Dark
+1,0,0,Dark
+1,0,0,Dark
+0,0,1,Well-lit
+1,0,1,Well-lit
+0,1,0,Well-lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+1,0,0,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Well-lit
+1,0,1,Dimly lit
+1,0,1,Well-lit
+1,1,1,Well-lit
+0,1,0,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+0,0,0,Dimly lit
+0,1,1,Well-lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dark
+0,1,1,Dimly lit
+0,1,1,Dimly lit
+0,0,1,Dark
+0,1,0,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dark
+1,1,1,Well-lit
+0,0,0,Dark
+0,1,0,Dark
+1,0,0,Dark
+0,0,1,Well-lit
+0,0,1,Dimly lit
+0,0,1,Well-lit
+0,1,1,Well-lit
+0,0,1,Dimly lit
+1,1,0,Dimly lit
+1,1,0,Well-lit
+0,1,1,Dark
+0,1,0,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Dark
+1,0,1,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Well-lit
+1,0,1,Dark
+0,0,1,Well-lit
+0,0,0,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+1,1,0,Dimly lit
+0,1,0,Dimly lit
+0,1,0,Dark
+1,0,1,Dark
+1,1,0,Well-lit
+1,0,1,Dimly lit
+0,1,1,Dark
+1,0,0,Well-lit
+0,0,0,Dark
+1,1,0,Well-lit
+1,0,1,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Dark
+0,0,0,Dimly lit
+1,1,0,Dimly lit
+0,0,0,Dimly lit
+1,0,1,Well-lit
+0,1,0,Dimly lit
+1,0,1,Dimly lit
+0,1,0,Well-lit
+0,1,1,Dimly lit
+1,0,0,Dimly lit
+1,0,1,Dimly lit
+1,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,1,Dark
+0,1,1,Dimly lit
+0,0,0,Well-lit
+1,1,1,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,1,0,Well-lit
+1,1,1,Well-lit
+1,0,0,Dimly lit
+1,1,1,Dark
+0,0,0,Well-lit
+0,1,0,Well-lit
+1,0,1,Dimly lit
+1,0,1,Dimly lit
+1,0,0,Dimly lit
+0,0,1,Dark
+1,0,0,Dimly lit
+1,0,0,Well-lit
+1,1,0,Well-lit
+0,1,0,Well-lit
+1,0,0,Dark
+0,0,0,Dimly lit
+0,1,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dark
+0,0,1,Dimly lit
+1,0,0,Dark
+0,0,1,Well-lit
+1,1,1,Well-lit
+0,0,0,Dimly lit
+1,0,1,Dimly lit
+0,1,0,Dark
+1,0,0,Well-lit
+1,0,1,Dark
+0,0,0,Dark
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+0,1,1,Dimly lit
+1,0,0,Dark
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,0,0,Dark
+0,1,0,Dark
+1,0,1,Dark
+1,0,0,Well-lit
+0,1,1,Dark
+1,0,1,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Well-lit
+1,1,1,Dimly lit
+1,0,1,Well-lit
+1,0,1,Dimly lit
+1,1,1,Well-lit
+0,1,0,Dark
+0,1,1,Dark
+0,0,0,Well-lit
+1,0,0,Dimly lit
+1,1,1,Dimly lit
+0,0,1,Well-lit
+0,1,0,Well-lit
+1,0,1,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,1,Well-lit
+0,1,1,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+1,1,1,Dimly lit
+1,1,0,Dimly lit
+1,1,0,Dark
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,1,0,Well-lit
+0,1,0,Dimly lit
+0,1,1,Dimly lit
+1,0,1,Dimly lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+0,0,1,Well-lit
+1,1,1,Well-lit
+0,0,0,Dark
+0,0,0,Dimly lit
+1,0,0,Well-lit
+0,0,1,Well-lit
+0,0,1,Well-lit
+0,0,0,Well-lit
+0,1,1,Well-lit
+1,0,0,Dimly lit
+0,0,1,Dimly lit
+0,1,0,Dimly lit
+1,0,0,Dimly lit
+0,0,1,Well-lit
+1,0,1,Dark
+0,0,0,Dark
+0,0,1,Well-lit
+1,1,1,Well-lit
+1,1,0,Well-lit
+1,0,0,Well-lit
+1,1,1,Well-lit
+1,1,1,Dimly lit
+0,0,1,Dimly lit
+0,0,1,Dark
+0,1,0,Well-lit
+0,0,0,Dimly lit
+1,0,1,Dark
+0,0,1,Dimly lit
+0,0,1,Dimly lit
+1,1,0,Well-lit
+1,0,0,Well-lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,1,1,Well-lit
+1,0,1,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+0,0,0,Dark
+1,1,0,Well-lit
+1,0,1,Well-lit
+0,0,1,Dark
+0,0,0,Well-lit
+1,1,0,Well-lit
+1,0,0,Dimly lit
+1,0,0,Dimly lit
+0,0,0,Dark
+0,1,1,Dimly lit
+1,0,1,Well-lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dark
+1,1,1,Dimly lit
+1,0,1,Dark
+0,1,0,Dimly lit
+0,0,0,Dark
+1,0,0,Dimly lit
+1,1,1,Dark
+0,0,0,Well-lit
+0,0,1,Well-lit
+0,1,1,Dimly lit
+0,1,0,Well-lit
+1,0,0,Well-lit
+0,1,1,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dimly lit
+1,1,1,Well-lit
+0,0,0,Well-lit
+1,0,1,Dark
+0,1,0,Dimly lit
+0,0,0,Well-lit
+1,1,0,Dark
+1,0,1,Well-lit
+0,1,0,Dimly lit
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+1,0,1,Dark
+0,0,0,Dark
+0,0,0,Well-lit
+0,1,1,Well-lit
+0,1,0,Dimly lit
+0,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,1,Dimly lit
+0,1,1,Well-lit
+0,1,0,Dark
+1,0,1,Well-lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+1,0,1,Well-lit
+0,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,1,Well-lit
+0,1,0,Dark
+1,0,0,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Dark
+0,0,1,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,0,0,Well-lit
+0,0,0,Dark
+0,0,1,Dimly lit
+0,1,0,Dark
+1,0,1,Dimly lit
+1,0,1,Dimly lit
+0,0,1,Dark
+0,1,0,Dark
+1,0,0,Well-lit
+0,0,1,Dimly lit
+0,0,1,Well-lit
+1,0,0,Dimly lit
+0,0,1,Dimly lit
+0,0,0,Dimly lit
+1,0,1,Well-lit
+1,0,0,Dimly lit
+1,0,1,Dimly lit
+1,0,1,Dark
+1,0,0,Dimly lit
+1,0,0,Dimly lit
+0,1,0,Well-lit
+0,1,1,Dimly lit
+0,1,0,Dimly lit
+0,1,0,Well-lit
+0,1,0,Well-lit
+1,0,1,Dark
+0,1,1,Dimly lit
+0,0,0,Dimly lit
+0,0,0,Well-lit
+0,1,0,Dimly lit
+0,0,0,Dimly lit
+1,0,0,Dimly lit
+1,1,0,Well-lit
+1,0,1,Dimly lit
+0,0,1,Dimly lit
+0,0,0,Well-lit
+0,0,1,Dark
+1,0,1,Dimly lit
+0,1,0,Well-lit
+1,0,1,Dark
+1,0,0,Dimly lit
+1,0,0,Dimly lit
+1,0,0,Dark
+0,0,0,Dimly lit
+0,0,0,Well-lit
+1,1,1,Dimly lit
+1,0,1,Well-lit
+1,0,0,Well-lit
+0,0,1,Dimly lit
+0,1,1,Dimly lit
+0,0,1,Well-lit
+1,0,0,Well-lit
+0,1,0,Dark
