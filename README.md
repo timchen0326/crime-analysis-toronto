@@ -2,7 +2,11 @@
 
 ## Overview
 
-This repository contains the analysis and findings for the paper *Examining the Influence of Premises Type and Time of Day on Violent Crime in Toronto: A Bayesian Approach to Analyzing Contextual and Temporal Factors in Urban Crime Dynamics*. The project leverages Bayesian logistic regression to uncover the relationship between violent crimes, premises type, and time of day in Toronto using the Major Crime Indicators dataset.
+This repository examines the factors that influence the likelihood of violent crimes in Toronto, focusing on two main predictors: the type of premises where the crime occurred and the time of day. Violent crimes, such as assault and robbery, pose significant risks to community safety and require evidence-based prevention strategies. By contrast, non-violent crimes like theft serve as a baseline for comparison.
+
+Using detailed data from the Toronto Police Service, we analyze patterns between environmental contexts, timing, and the probability of violent crimes. Applying Bayesian logistic regression modeling, the study accounts for uncertainty and leverages prior knowledge to generate practical findings. The results indicate that violent crimes are more likely to occur in transit and outdoor locations compared to residential or educational premises. Additionally, these crimes are more common during afternoon and evening hours than in the early morning.
+
+The insights from this research aim to inform crime prevention efforts, resource allocation, and urban safety policies by identifying high-risk contexts for violence. This can help city planners and policymakers effectively enhance public safety by focusing on specific locations and times with elevated risks.
 
 ## File Structure
 
