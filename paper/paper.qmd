@@ -433,10 +433,31 @@ Victims listed in the Toronto Police Service records for violent crimes occurrin
 - Incidents classified as unfounded or withdrawn.
 - Individuals unable or unwilling to consent.
 
+## Budget Allocation
+
+The total budget for this survey is $100,000, allocated as follows:
+
+- **Recruitment and Outreach ($25,000):**
+  - Partnering with Toronto Police Services to contact victims via official channels.
+  - Direct mailers and digital outreach (e.g., SMS, emails).
+
+- **Incentives for Participation ($60,000):**
+  - $20 gift card for completing the survey.
+  - Estimated 3,000 participants.
+
+- **Survey Design and Implementation ($10,000):**
+  - Professional survey platform subscription.
+  - Data cleaning and preprocessing costs.
+
+- **Contingency Funds ($5,000):**
+  - Unanticipated costs related to participant recruitment or data handling.
+
+This allocation prioritizes participant incentives to ensure robust response rates while maintaining sufficient funding for recruitment and operational expenses.
+
 ## Survey Instrument
 
-This questionnaire is designed to collect detailed information from victims of violent crimes. The sections and questions align precisely with the Google Form provided. Additionally, attention checks have been included in the survey to ensure data quality. The survey is accessible at the following link:  
-[https://forms.gle/d81J3S9HpPgJPUkM6](https://forms.gle/d81J3S9HpPgJPUkM6)
+The questionnaire is designed to collect detailed information from victims of violent crimes. Attention checks are included to ensure data quality. The survey link: [Survey Form](https://forms.gle/d81J3S9HpPgJPUkM6).
+
 
 ### Section 1: Demographics
 
@@ -597,51 +618,31 @@ This questionnaire is designed to collect detailed information from victims of v
     - No  
     - If Yes: *Approximately how many?*  
 
-
 ## Ethical Considerations
 
 ### Informed Consent
-
-- Participants will receive detailed information about the study's purpose, procedures, risks, and benefits.
-- Consent forms will be signed prior to participation.
-- Participants can withdraw at any time without penalty.
+- Participants will be informed about the purpose, risks, and benefits of the survey. Consent is mandatory.
 
 ### Confidentiality
-
-- Personal identifiers will be removed or coded.
-- Data will be stored securely with access limited to authorized personnel.
-- Results will be reported in aggregate to prevent identification.
+- Responses will be anonymized. Data will be securely stored and used only for research purposes.
 
 ### Protection of Participants
-
-- Interviews will be conducted sensitively to minimize distress.
-- Referral information for support services will be provided.
-- Participation is entirely voluntary.
+- Sensitive topics will be handled by trained staff. Resources for support services will be provided.
 
 ### Ethical Approval
-
-The study protocol will be reviewed and approved by an Institutional Review Board (IRB) or Research Ethics Board (REB) prior to commencement.
+- The study protocol will undergo review by a Research Ethics Board (REB).
 
 ## Data Collection Procedures
 
 ### Mode of Data Collection
-
-- **Primary Method**: Telephone interviews conducted by trained researchers.
-- **Alternative Methods**: In-person interviews or online questionnaires, depending on participant preference.
-
-### Interviewer Training
-
-- Training on trauma-informed interviewing techniques.
-- Guidelines on handling disclosures and providing support information.
+- **Primary Method**: Online surveys through a secure platform.
+- **Alternative Methods**: Telephone interviews for participants with limited internet access.
 
 ### Timeline
-
-Data collection will occur within two months following the incidents to ensure accurate recall.
+- Data collection will be completed within two months of the survey launch.
 
 ### Contact Protocol
-
-- Initial contact will be made via mail or email explaining the study and requesting participation.
-- Follow-up contact will be made to schedule interviews.
+- Initial invitations via email or mail, followed by reminders to maximize participation.
 
 ## Data Management and Analysis
 
@@ -668,15 +669,35 @@ To validate and explore the survey design, a simulated dataset was generated to 
 The dataset was generated using R, saved as a CSV file, and subsequently visualized to ensure the data reflects the survey's design specifications.
 
 ```{r}
+#| label: tbl-simulated-data
+#| tbl-cap: "Preview of the Simulated Crime Dataset"
+#| echo: false
+#| warning: false
+#| message: false
+
+
+simulated_data <- read_csv(here::here("data/00-simulated_data/survey_simulated_crime_data.csv"))
+
+# Transpose the first 5 rows of the dataset
+t_simulated_data <- simulated_data[1:5, ] %>%
+  t() %>%
+  as.data.frame()
+
+# Convert row names to a column for display
+t_simulated_data <- tibble::rownames_to_column(t_simulated_data, var = "Variable")
+
+# Display the transposed data with variables on the left
+t_simulated_data %>%
+  kable()
+```
+
+```{r}
 #| label: fig-simulated-crime
 #| fig-cap: "Visualizations of Simulated Crime Data Variables"
 #| fig-subcap: ["Proportion of Violent Crimes", "Lighting Conditions Distribution", "Alcohol Involvement", "Area Familiarity"]
 #| echo: false
 #| warning: false
 #| message: false
-
-# Import the simulated data from the specified CSV file
-simulated_data <- read_csv(here::here("data/00-simulated_data/survey_simulated_crime_data.csv"))
 
 # Visualization: Proportion of Violent Crimes
 violent_crime_plot <- simulated_data %>%
@@ -726,7 +747,6 @@ area_familiarity_plot <- simulated_data %>%
 (violent_crime_plot | lighting_conditions_plot) /
 (alcohol_involvement_plot | area_familiarity_plot)
 ```
-
 
 ## Quality Assurance
 
