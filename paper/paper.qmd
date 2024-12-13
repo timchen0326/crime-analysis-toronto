@@ -329,11 +329,11 @@ The coefficients are reported in log-odds, where a positive value indicates an i
 
 ## Relationship between Premises Type and Violent Crime
 
-The analysis underscores that premises type significantly influences the likelihood of violent crimes. Transit locations, often hubs of activity with limited surveillance, exhibit the highest odds of violent crimes. This aligns with urban safety theories suggesting that environments characterized by anonymity and low surveillance facilitate opportunistic and interpersonal violence. Similarly, outdoor areas, with their open and unregulated nature, remain high-risk zones for confrontations. In contrast, locations with inherent structural or social control, such as residential houses and schools, show markedly reduced odds of violent crimes. These findings emphasize the interplay between spatial control and crime likelihood, suggesting that environments fostering visibility, routine, and structural oversight are critical deterrents for violent activity. Policymakers might explore how urban designs, such as transit hubs with natural surveillance features, could mitigate risks in identified high-crime premises.
+The analysis underscores that premises type significantly influences the likelihood of violent crimes. Transit locations, often hubs of activity with limited surveillance, exhibit the highest odds of violent crimes. This aligns with urban safety theories suggesting that environments characterized by anonymity and low surveillance facilitate opportunistic and interpersonal violence. Similarly, outdoor areas, with their open and unregulated nature, remain high-risk zones for confrontations. In contrast, locations with inherent structural or social control, such as residential houses and schools, show markedly reduced odds of violent crimes. These findings emphasize the interplay between spatial control and crime likelihood, suggesting that environments fostering visibility, routine, and structural oversight are essential deterrents for violent activity. Policymakers might explore how urban designs, such as transit hubs with natural surveillance features, could mitigate risks in identified high-crime premises.
 
 ## Relationship between Time of Day and Violent Crime
 
-Time of day has emerged as another critical determinant of violent crime patterns, reflecting the temporal rhythms of human activity. The elevated risk of violent crimes during afternoon and evening hours correlates with periods of heightened social interaction and mobility. Beyond the opportunity framework, this trend could also be linked to psychological and behavioral factors, such as stress accumulation or alcohol consumption patterns, which intensify during these hours. Morning hours, often structured by routines and higher institutional oversight, exhibit a stabilizing effect, further reinforcing the connection between predictability in human activity and crime reduction. These findings suggest that temporal interventions, such as staggered policing schedules or temporal zoning laws, could play a key role in mitigating violence during high-risk periods.
+Time of day has emerged as another essential determinant of violent crime patterns, reflecting the temporal rhythms of human activity. The elevated risk of violent crimes during afternoon and evening hours correlates with periods of heightened social interaction and mobility. Beyond the opportunity framework, this trend could also be linked to psychological and behavioral factors, such as stress accumulation or alcohol consumption patterns, which intensify during these hours. Morning hours, often structured by routines and higher institutional oversight, exhibit a stabilizing effect, further reinforcing the connection between predictability in human activity and crime reduction. These findings suggest that temporal interventions, such as staggered policing schedules or temporal zoning laws, could play a key role in mitigating violence during high-risk periods.
 
 ## Expanding Implications for Policy and Prevention
 
@@ -347,7 +347,7 @@ While the current study primarily addresses spatial and temporal patterns, incor
 
 ### Strategic Resource Allocation
 
-The predictive insights offered by this study support law enforcement agencies in adopting data-driven approaches for resource allocation. By utilizing the RESTful API developed from this study, stakeholders can simulate various scenarios to predict high-risk situations and proactively deploy resources to mitigate risks. Expanding the API’s capabilities to integrate real-time data inputs, such as weather or crowd density, could further enhance its utility for dynamic and responsive safety planning.
+The predictive findings offered by this study support law enforcement agencies in adopting empirical approaches for resource allocation. By utilizing the RESTful API developed from this study, stakeholders can simulate various scenarios to predict high-risk situations and proactively deploy resources to mitigate risks. Expanding the API’s capabilities to integrate real-time data inputs, such as weather or crowd density, could further enhance its utility for dynamic and responsive safety planning.
 
 ## Limitations {#sec-limitations}
 
@@ -357,7 +357,7 @@ The study uses police-reported crime data, which excludes unreported incidents. 
 
 ### Simplification of Time Categories
 
-Dividing time into four broad categories (Early Morning, Morning, Afternoon, and Evening) offers clarity but limits the ability to observe finer patterns. For example, crimes occurring during transitional periods, such as early evening or late night, might follow distinct trends not captured by this framework. Future studies could use more detailed time intervals to better align with changes in social activity and behavior.
+Dividing time into four broad categories (Early Morning, Morning, Afternoon, and Evening) provides clarity but limits the ability to observe finer patterns. For example, crimes occurring during transitional periods, such as early evening or late night, might follow distinct trends not captured by this framework. Future studies could use more detailed time intervals to better align with changes in social activity and behavior.
 
 ### Contextual Variability
 
@@ -371,11 +371,11 @@ Future studies could use GIS technology to conduct detailed spatial analyses, id
 
 ### Temporal and Behavioral Factors
 
-Exploring time with finer granularity, such as hourly trends, could reveal patterns that are currently obscured. Additionally, combining behavioral data—such as crowd size or environmental conditions—with existing predictors may uncover new insights, such as the combined impact of transit activity and evening hours on crime risk.
+Exploring time with finer granularity, such as hourly trends, could reveal patterns that are currently obscured. Additionally, combining behavioral data—such as crowd size or environmental conditions—with existing predictors may uncover new findings, such as the combined impact of transit activity and evening hours on crime risk.
 
 ## Conclusion
 
-This study identifies the significant roles that premises type and time of day play in shaping the likelihood of violent crimes in Toronto. High-risk locations, such as transit hubs and outdoor spaces, and peak times, such as afternoons and evenings, highlight areas for focused interventions. These findings can inform practical safety measures, such as improved surveillance and better resource allocation during critical times and in high-risk areas. Although the analysis is limited by its broad categories, it demonstrates the value of understanding crime patterns through spatial and temporal dimensions, laying the groundwork for future research and actionable safety strategies.
+This study identifies the significant roles that premises type and time of day play in shaping the likelihood of violent crimes in Toronto. High-risk locations, such as transit hubs and outdoor spaces, and peak times, such as afternoons and evenings, highlight areas for focused interventions. These findings can inform practical safety measures, such as improved surveillance and better resource allocation during essential times and in high-risk areas. Although the analysis is limited by its broad categories, it demonstrates the value of understanding crime patterns through spatial and temporal dimensions, laying the groundwork for future research and actionable safety strategies.
 
 
 
@@ -388,7 +388,7 @@ This study identifies the significant roles that premises type and time of day p
 
 ## Introduction
 
-This survey is designed to gather detailed information from victims of violent crimes in Toronto during the month of July. The primary goal is to supplement existing police data to better understand the factors influencing the likelihood of violent crimes, with a focus on premises type and time of day. By collecting firsthand accounts from victims, the study aims to uncover additional insights that can inform effective crime prevention strategies and policies.
+This survey is designed to gather detailed information from victims of violent crimes in Toronto during the month of July. The primary goal is to supplement existing police data to better understand the factors influencing the likelihood of violent crimes, with a focus on premises type and time of day. By collecting firsthand accounts from victims, the study aims to uncover additional findings that can inform effective crime prevention strategies and policies.
 
 ## Objectives
 
